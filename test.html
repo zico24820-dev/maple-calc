@@ -29,10 +29,6 @@
     <div id="global-tooltip" class="fixed hidden bg-black/95 text-white text-xs p-2.5 rounded-lg shadow-2xl z-[9999] max-w-[220px] pointer-events-none leading-relaxed border border-gray-600 backdrop-blur-sm">
     </div>
 
-    <div class="w-full flex justify-center my-4">
-    <img src="images/sugar-event.png" alt="이벤트 배너" class="w-full rounded-xl">
-</div>
-
     <div class="w-full flex justify-center">
         <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_list?board=6697" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
             <img id="banner-img" src="" alt="공지 배너" class="rounded-b-xl shadow-lg" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;">
@@ -200,9 +196,9 @@
             { key: 'atk', label: '공격력' },
             { key: 'atkSpeed', label: '공격속도%' },
             { key: 'damage', label: '데미지%' },
-            { key: 'minMaxDmg', label: '최소+최대' }, 
+            { key: 'minMaxDmg', label: '최소+최대', desc: '마지막에 2로 나누어 계산됩니다'}, 
             { key: 'bossDamage', label: '보공%' },
-            { key: 'normalDamage', label: '일반뎀%', desc: '마지막에 2로 나누어 계산됩니다'},
+            { key: 'normalDamage', label: '일반뎀%'},
             { key: 'critRate', label: '크확%', desc: '최대 100%까지 적용됩니다.' },
             { key: 'critDmg', label: '크리데미지%' },
             { key: 'statPercent', label: '주스텟%' },
