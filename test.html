@@ -406,10 +406,11 @@ function setBadge(key, text, colorClass) {
                             if (idMatch) imgUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
                         }
                         bannerImg.src = imgUrl;
-                        if(bannerLink) {
-                            bannerLink.classList.remove('hidden');
-                            if(sys.banner_link) bannerLink.href = sys.banner_link;
-                        }
+                       // (예시)
+if(bannerLink) {
+    bannerLink.classList.remove('hidden');
+    bannerLink.href = 'https://forum.nexon.com/maplestoryidle-kr/board_view?board=6697&thread=3339452'; // 여기 직접 수정
+}
                     }
                 }
 
