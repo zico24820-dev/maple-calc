@@ -29,6 +29,13 @@
     <div id="global-tooltip" class="fixed hidden bg-black/95 text-white text-xs p-2.5 rounded-lg shadow-2xl z-[9999] max-w-[220px] pointer-events-none leading-relaxed border border-gray-600 backdrop-blur-sm">
     </div>
 
+   
+    <div class="w-full flex justify-center my-4">
+    <a href="https://forum.nexon.com/maplestoryidle-kr/board_view?board=6697&thread=3339452" target="_blank">
+    <img src="images/sugar-event.png" alt="이벤트 배너" class="w-full rounded-xl">
+</a>
+</div>
+
     <div class="w-full flex justify-center">
         <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_list?board=6697" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
             <img id="banner-img" src="" alt="공지 배너" class="rounded-b-xl shadow-lg" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;">
@@ -188,7 +195,7 @@
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz8ePLqx1LM7tDmIXWC1Opv6V5IY76_zWScveWl0NsVIgUpypFNNbjLLFuJDA6f2AZ9/exec";
-        const APP_VERSION = "8.1"; 
+        const APP_VERSION = "8.5(Fix)"; 
 
         document.getElementById('app-ver').innerText = APP_VERSION;
 
@@ -196,9 +203,9 @@
             { key: 'atk', label: '공격력' },
             { key: 'atkSpeed', label: '공격속도%' },
             { key: 'damage', label: '데미지%' },
-            { key: 'minMaxDmg', label: '최소+최대뎀' }, 
+            { key: 'minMaxDmg', label: '최소+최대', desc: '마지막에 2로 나누어 계산됩니다.'}, 
             { key: 'bossDamage', label: '보공%' },
-            { key: 'normalDamage', label: '일반뎀%' },
+            { key: 'normalDamage', label: '일반뎀%'},
             { key: 'critRate', label: '크확%', desc: '최대 100%까지 적용됩니다.' },
             { key: 'critDmg', label: '크리데미지%' },
             { key: 'statPercent', label: '주스텟%' },
@@ -333,15 +340,27 @@
             };
         }
 
-    function setBadge(key, text, colorClass) {
-            const el = document.getElementById(`badge-${key}`);
-            if(el) {
-                el.innerText = text;
-                // whitespace-nowrap 추가: 뱃지 내부 줄바꿈 방지
-                el.className = `text-[9px] font-bold border px-1 rounded whitespace-nowrap ${colorClass}`;
-                el.classList.remove('hidden');
-            }
-        }
+   // ▼ 기존 setBadge 함수를 찾아서 이걸로 덮어씌우세요 ▼
+function setBadge(key, text, colorClass) {
+    const el = document.getElementById(`badge-${key}`);
+    if(el) {
+        el.innerText = text;
+        // 테일윈드 클래스 중복 방지 및 초슬림 스타일 적용
+        // 기존 colorClass에서 폰트 크기 관련 클래스는 제거합니다.
+        let cleanedColorClass = colorClass
+            .replace(/text-\[.*?\]/g, '')
+            .replace(/text-xs/g, '')
+            .replace(/text-sm/g, '')
+            .replace(/font-bold/g, '')
+            .replace(/border/g, '')
+            .replace(/px-1/g, '')
+            .replace(/rounded/g, '')
+            .replace(/whitespace-nowrap/g, '');
+            
+        el.className = `shrink-0 ml-0.5 text-[9px] font-bold border px-[3px] rounded-sm whitespace-nowrap ${cleanedColorClass}`;
+        el.classList.remove('hidden');
+    }
+}
 
         function showTooltip(event, text) {
             const tooltip = document.getElementById('global-tooltip');
@@ -446,29 +465,34 @@
                 let tooltipHtml = '';
                 if (f.desc) {
                     const safeDesc = f.desc.replace(/"/g, "&quot;");
+                    // 툴팁 아이콘도 크기를 줄이고(w-3 h-3 -> w-2.5 h-2.5) 간격을 좁힘
                     tooltipHtml = `
-                    <div class="ml-1 cursor-help shrink-0" 
+                    <div class="ml-0.5 cursor-help shrink-0" 
                          onmouseenter="showTooltip(event, '${safeDesc}')" 
                          onmouseleave="hideTooltip()">
-                        <span class="text-[10px] text-gray-500 border border-gray-600 rounded-full w-3 h-3 flex items-center justify-center hover:text-white hover:border-white transition">?</span>
+                        <span class="text-[9px] text-gray-500 border border-gray-500 rounded-full w-2.5 h-2.5 flex items-center justify-center hover:text-white hover:border-white transition">?</span>
                     </div>`;
                 }
 
-                const badgeHtml = `<span id="badge-${f.key}" class="hidden shrink-0 ml-2"></span>`;
+                // 뱃지 스타일: 간격을 최소화(ml-0.5)하고 폰트 크기 고정(text-[9px])
+                const badgeHtml = `<span id="badge-${f.key}" class="hidden shrink-0 ml-0.5 text-[9px] font-bold border px-0.5 rounded whitespace-nowrap"></span>`;
 
-                // 공통 디자인 클래스 정의 (수정하기 편하게)
-                // 모바일: 세로 배치(flex-col), PC: 가로 배치(sm:flex-row)
-                const wrapperClass = "flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#25262b] border border-[#373a40] rounded-lg p-2.5 mb-2 hover:border-[#4dabf7] transition group";
-                const labelClass = "flex items-center mb-1.5 sm:mb-0"; // 모바일에서 입력창과 간격(mb-1.5)
-                const labelTextClass = "text-xs text-gray-300 font-bold group-hover:text-white transition";
+                // ✨ 디자인 핵심 변경점 ✨
+                // 1. wrapperClass: h-8(높이 고정), px-1.5 py-0.5(여백 최소화), mb-0.5(항목 간 간격 축소)
+                // 2. labelTextClass: text-[11px](폰트 축소), whitespace-nowrap(절대 줄바꿈 금지!)
+                // 3. inputClass: h-6(입력창 높이 축소), w-16(너비 약간 축소), text-[11px](폰트 축소)
                 
-                // 입력창: 모바일에서는 꽉 차게(w-full), PC에서는 적당히(sm:w-28)
-                const inputClass = "input-box w-full sm:w-28 rounded px-3 py-1.5 text-right text-sm font-bold shadow-inner focus:ring-1 focus:ring-blue-500 border-gray-600 bg-[#1A1B1E]";
+                const wrapperClass = "flex justify-between items-center bg-[#25262b] hover:bg-[#2C2E33] border border-[#373a40] rounded px-1.5 py-0.5 mb-0.5 transition group h-7";
+                const labelRowClass = "flex items-center overflow-hidden flex-grow gap-0.5 mr-1"; // 라벨 영역
+                const labelTextClass = "text-[11px] text-gray-400 font-medium group-hover:text-white transition whitespace-nowrap truncate"; 
+                
+                // 입력창을 더 작고 슬림하게 만듦
+                const inputClass = "input-box w-[68px] h-6 rounded px-1 text-right text-[11px] font-bold border-gray-600 bg-[#1A1B1E] text-white shrink-0 focus:ring-1 focus:ring-blue-500";
 
                 // ▼ [내 스텟창]
                 baseContainer.innerHTML += `
                     <div class="${wrapperClass}">
-                        <div class="${labelClass}"> 
+                        <div class="${labelRowClass}"> 
                             <span class="${labelTextClass}">${f.label}</span>
                             ${tooltipHtml}
                             ${badgeHtml}
@@ -481,7 +505,7 @@
                 // ▼ [착용템]
                 itemAContainer.innerHTML += `
                     <div class="${wrapperClass}">
-                        <div class="${labelClass}"> 
+                        <div class="${labelRowClass}"> 
                             <span class="${labelTextClass}">${f.label}</span>
                             ${tooltipHtml}
                         </div>
@@ -493,16 +517,29 @@
                 // ▼ [바꿀템]
                 itemBContainer.innerHTML += `
                     <div class="${wrapperClass}">
-                        <div class="${labelClass}">
+                        <div class="${labelRowClass}">
                             <span class="${labelTextClass}">${f.label}</span>
                             ${tooltipHtml}
-                            <span id="diff-tag-${f.key}" class="diff-tag ml-2 shrink-0"></span>
+                            <span id="diff-tag-${f.key}" class="diff-tag ml-0.5 shrink-0 text-[9px]"></span>
                         </div>
                         <input type="number" id="input-B-${f.key}" placeholder="-" 
                             oninput="updateItem('B', '${f.key}', this.value)"
                             class="${inputClass} focus:ring-red-500">
                     </div>`;
             });
+            
+            // 뱃지 스타일을 자바스크립트에서 직접 주입하므로 기존 setBadge 함수도 수정 필요
+            // (기존 함수를 아래 함수로 교체해주세요)
+            window.setBadge = function(key, text, colorClass) {
+                const el = document.getElementById(`badge-${key}`);
+                if(el) {
+                    el.innerText = text;
+                    // 기존 colorClass에서 text-size 관련 클래스가 있다면 제거하고 우리가 정한 크기 사용
+                    let finalColorClass = colorClass.replace(/text-\[.*?\]/g, '').replace(/text-xs/g, '').replace(/text-sm/g, '');
+                    el.className = `shrink-0 ml-0.5 text-[9px] font-bold border px-0.5 rounded whitespace-nowrap ${finalColorClass}`;
+                    el.classList.remove('hidden');
+                }
+            }
         }
 
         function saveExtraSettings() {
