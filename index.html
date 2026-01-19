@@ -29,13 +29,6 @@
     <div id="global-tooltip" class="fixed hidden bg-black/95 text-white text-xs p-2.5 rounded-lg shadow-2xl z-[9999] max-w-[220px] pointer-events-none leading-relaxed border border-gray-600 backdrop-blur-sm">
     </div>
 
-   
-    <div class="w-full flex justify-center my-4">
-    <a href="https://forum.nexon.com/maplestoryidle-kr/board_view?board=6697&thread=3339452" target="_blank">
-    <img src="images/sugar-event.png" alt="이벤트 배너" class="w-full rounded-xl">
-</a>
-</div>
-
     <div class="w-full flex justify-center">
         <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_list?board=6697" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
             <img id="banner-img" src="" alt="공지 배너" class="rounded-b-xl shadow-lg" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;">
@@ -195,7 +188,7 @@
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz8ePLqx1LM7tDmIXWC1Opv6V5IY76_zWScveWl0NsVIgUpypFNNbjLLFuJDA6f2AZ9/exec";
-        const APP_VERSION = "8.5(Fix)"; 
+        const APP_VERSION = "8.6(Fix)"; 
 
         document.getElementById('app-ver').innerText = APP_VERSION;
 
@@ -207,9 +200,10 @@
             { key: 'bossDamage', label: '보공%' },
             { key: 'normalDamage', label: '일반뎀%'},
             { key: 'critRate', label: '크확%', desc: '최대 100%까지 적용됩니다.' },
+
             { key: 'critDmg', label: '크리데미지%' },
-            { key: 'statPercent', label: '주스텟%' },
-            { key: 'flatMainStat', label: '깡 주스텟' },
+            { key: 'statPercent', label: '스텟비례데미지%' },
+            { key: 'flatMainStat', label: '주스텟(일반)' },
             { key: 'finalDmg', label: '최종뎀%', desc: '최종적으로 곱해지는 데미지입니다.' }, 
             { key: 'ampDmg', label: '증폭%', desc: '최종 데미지와 별개로 곱연산되는 희귀 스탯입니다.' }
         ];
@@ -258,7 +252,7 @@
                 // 만약 100%라면? 어차피 효율 0이라서 꼴찌로 갈 테니 상관 없음.
                 // { key: 'critRate', ... } -> 제외 (위에서 처리)
                 { key: 'critDmg', label: '크리뎀', gain: getGain(baseStats, 'critDmg', increaseAmount) },
-                { key: 'statPercent', label: '주스텟', gain: getGain(baseStats, 'statPercent', increaseAmount) }
+                { key: 'statPercent', label: '스텟비례', gain: getGain(baseStats, 'statPercent', increaseAmount) }
             ];
 
             // 4. 효율 높은 순 정렬
