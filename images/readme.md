@@ -1,1 +1,1 @@
-<img src="images/sugar-event.png" alt="슈가 이벤트">
+<img src="images/moonr-event.png" alt="월묘와 함께하는 설맞이 이벤트🔥">

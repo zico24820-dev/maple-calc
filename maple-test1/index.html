@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <link rel="stylesheet" href="assets/css/updates.css" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7732517218301279" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,10 +31,19 @@
     </div>
 
     <div class="w-full flex justify-center">
-        <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_list?board=6697" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
+        <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_view?board=6697&thread=3359525" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
             <img id="banner-img" src="" alt="공지 배너" class="rounded-b-xl shadow-lg" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;">
         </a>
     </div>
+
+    <!-- 업데이트 패널 요소들(초기에는 비활성화된 상태일 수 있음) -->
+     <div id="updates-panel" aria-label="업데이트 패널" style="display:none"></div>
+  <div id="updates-fab" aria-label="업데이트 팝업 버튼" style="position: fixed; right: 18px; bottom: 18px; z-index: 60; display:block">
+      <button onclick="toggleUpdatesPanel()" style="width:48px; height:48px; border-radius:999px; background:#2563eb; color:white; border:0; box-shadow:0 6px 14px rgba(0,0,0,.25); font-weight:700">i</button>
+  </div>
+  <div id="updates-toast" aria-live="polite" style="position: fixed; top: 70px; right: 18px; background: #111827; color:white; padding: 12px 16px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.25); display:none; z-index: 70; max-width:320px;">새 업데이트가 준비됐습니다.</div>
+
+  <script src="assets/js/updates-loader.js" defer></script>
 
     <div id="notice-container" class="w-full bg-blue-600 text-white text-sm text-center py-2 hidden notice-bar shadow-md z-10">
         <span class="font-bold">📢 NOTICE:</span> <span id="notice-msg">로딩중...</span>
