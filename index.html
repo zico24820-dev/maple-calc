@@ -499,6 +499,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" value="${baseStats[f.key] || ''}" placeholder="0"
                             oninput="updateBase('${f.key}', this.value)"
+                            onchange="amplitude.track('Input_Base_Stat', {stat_name: '${f.label}'})"
                             class="${inputClass}">
                     </div>`;
                 
@@ -511,6 +512,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" id="input-A-${f.key}" placeholder="-" 
                             oninput="updateItem('A', '${f.key}', this.value)"
+                            onchange="amplitude.track('Input_Current_Item', {stat_name: '${f.label}'})"
                             class="${inputClass}">
                     </div>`;
 
@@ -524,6 +526,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" id="input-B-${f.key}" placeholder="-" 
                             oninput="updateItem('B', '${f.key}', this.value)"
+                            onchange="amplitude.track('Input_New_Item', {stat_name: '${f.label}'})"
                             class="${inputClass} focus:ring-red-500">
                     </div>`;
             });
