@@ -5,7 +5,7 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메이플 키우기 계산기 (TalkView Edition)</title>
+    <title>메이플 키우기 계산기( (TalkView Edition))</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.amplitude.com/script/26b78d7a4668f9cff4a4270923e264b3.js"></script>
@@ -85,23 +85,26 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
             <div class="lg:col-span-3 bg-[#1A1B1E] p-4 rounded-lg border border-[#373A40] flex flex-col h-[680px]">
                 
                 <div class="mb-4 pb-4 border-b border-gray-700">
-                    <h2 class="font-bold text-yellow-500 mb-2 text-sm flex items-center gap-1">
-                        ⚡ 전투/스킬 설정
-                        <div class="cursor-help" onmouseenter="showTooltip(event, '스킬의 퍼센트 데미지와 타수를 입력하세요.')" onmouseleave="hideTooltip()">
-                             <span class="text-[10px] text-gray-500 border border-gray-500 rounded-full w-3 h-3 flex items-center justify-center">?</span>
-                        </div>
-                    </h2>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <span class="text-[10px] text-gray-400">스킬 계수(%)</span>
-                            <input type="number" id="skill-percent" value="100" class="input-box w-full rounded px-2 py-1 text-right text-xs" oninput="saveExtraSettings()">
-                        </div>
-                        <div>
-                            <span class="text-[10px] text-gray-400">타수</span>
-                            <input type="number" id="skill-hit" value="1" class="input-box w-full rounded px-2 py-1 text-right text-xs" oninput="saveExtraSettings()">
-                        </div>
-                    </div>
-                </div>
+    <div class="flex justify-between items-center mb-2">
+        <h2 class="font-bold text-yellow-500 text-sm flex items-center gap-1">
+            ⚡ 전투/스킬 설정
+            <div class="cursor-help" onmouseenter="showTooltip(event, '스킬의 퍼센트 데미지와 타수를 입력하세요.')" onmouseleave="hideTooltip()">
+                 <span class="text-[10px] text-gray-500 border border-gray-500 rounded-full w-3 h-3 flex items-center justify-center">?</span>
+            </div>
+        </h2>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-2 mb-3">
+        <div>
+            <span class="text-[10px] text-gray-400">스킬 계수(%)</span>
+            <input type="number" id="skill-percent" placeholder="100" class="input-box w-full rounded px-2 py-1 text-right text-xs focus:ring-1 focus:ring-yellow-500" oninput="saveExtraSettings()">
+        </div>
+        <div>
+            <span class="text-[10px] text-gray-400">타수</span>
+            <input type="number" id="skill-hit" placeholder="1" class="input-box w-full rounded px-2 py-1 text-right text-xs focus:ring-1 focus:ring-yellow-500" oninput="saveExtraSettings()">
+        </div>
+    </div>
+</div>
 
                 <h2 class="font-bold text-[#4dabf7] mb-2 text-sm">📊 내 스텟창 (기본)</h2>
                 <div id="base-inputs" class="space-y-2 flex-1 overflow-y-auto pr-2 custom-scrollbar"></div>
@@ -151,6 +154,68 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
             </p>
         </div>
     </div>
+
+    <div class="px-6 pb-6">
+            <details class="bg-[#141517] border border-blue-900/30 rounded-lg overflow-hidden group">
+                <summary class="flex items-center justify-between p-3 cursor-pointer select-none text-blue-400 hover:text-blue-300 transition bg-blue-900/10">
+                    <span class="text-xs font-bold flex items-center gap-2">
+                        💧 마나 효율 분석기 (Beta)
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </summary>
+
+                <div class="p-4 border-t border-blue-900/30 bg-[#1A1B1E]">
+                    <div class="mana-calc-container">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            <div>
+                                <label class="text-[10px] text-gray-400 block mb-1">최대 마나</label>
+                                <input type="number" id="inp-max-mana" placeholder="1073" oninput="runManaCalc()" class="input-box w-full rounded px-2 py-1 text-xs h-8 focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-400 block mb-1">스킬 소모값</label>
+                                <input type="number" id="inp-skill-cost" placeholder="53" oninput="runManaCalc()" class="input-box w-full rounded px-2 py-1 text-xs h-8 focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-green-400 block mb-1">초당 회복량</label>
+                                <input type="number" id="inp-mana-regen" placeholder="0" oninput="runManaCalc()" class="input-box w-full rounded px-2 py-1 text-xs h-8 focus:ring-1 focus:ring-green-500 text-green-300">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-400 block mb-1">공격 속도(%)</label>
+                                <input type="number" id="inp-atk-speed" placeholder="자동" readonly class="input-box w-full rounded px-2 py-1 text-xs h-8 bg-gray-800 text-gray-500 cursor-not-allowed">
+                            </div>
+                        </div>
+
+                        <div id="res-box" class="bg-[#101113] p-3 rounded border border-gray-700 text-center transition-colors duration-300">
+                            <span id="badge-efficiency" class="inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white bg-gray-600 mb-3">
+                                데이터 입력 대기 중...
+                            </span>
+                            
+                            <div class="grid grid-cols-3 gap-2 text-xs text-gray-400 border-t border-gray-700 pt-3">
+                                <div>
+                                    <p class="text-[9px] text-gray-500 mb-0.5">⏱️ 유지 시간</p>
+                                    <strong id="res-time" class="text-white">-</strong>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] text-gray-500 mb-0.5">💧 필요 마나(12s)</p>
+                                    <strong id="res-req" class="text-white">-</strong>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] text-gray-500 mb-0.5">⚡ 실제 공속</p>
+                                    <strong id="res-aps" class="text-white">-</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <p class="text-[9px] text-gray-600 mt-2 text-center">
+                            * 공격 속도는 위 계산기의 '내 스텟창 + 아이템' 합산값이 자동 적용됩니다.
+                        </p>
+                    </div>
+                </div>
+            </details>
+        </div>
+        </div>
 
     <div class="w-full max-w-5xl mt-6 px-1 mb-10">
         <div class="bg-[#1A1B1E] border border-[#373A40] rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4 shadow-lg">
@@ -316,25 +381,44 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
             const critDmg = stats.critDmg || 0;
             const critMult = 1 + ((critRate / 100) * (critDmg / 100));
 
-            const atkSpeed = Math.min((stats.atkSpeed || 0), 150);
-            const atkSpeedMult = 1 + (atkSpeed / 100);
+            //  1. 공격 속도 제한 (분석 결과 최대 150%)
+            const atkSpeedPct = Math.min((stats.atkSpeed || 0), 150);
+
+            
+            // 2. 서버 연산 기준 (기본 초당 공격 횟수 1.0) 
+            const baseAPS = 1.0;
+
+            // 3. [핵심] 정밀 계산용 APS (0.1%의 차이도 데미지에 반영)
+            // 예: 66.6% -> 1.666, 66.7% -> 1.667
+            const rawAPS = baseAPS * (1 + (atkSpeed / 100));
+
+            // 4. 유저 표기용 APS (MGF 사이트 대조용 반올림)
+            const displayAPS = parseFloat(rawAPS.toFixed(2));
+
+            // 5. 독립 스탯 멀티플라이어 (기존 공식 유지)
 
             const normalMult = 1 + ((stats.normalDamage || 0) / 100);
             const bossMult = 1 + ((stats.bossDamage || 0) / 100);
-            
             const finalMult = 1 + ((stats.finalDmg || 0) / 100);
             const ampMult = 1 + ((stats.ampDmg || 0) / 100);
-            
             const statMult = 1 + ((stats.statPercent || 0) / 100);
 
+            // 6. 최종 데미지 산출 (정밀한 rawAPS 적용)
             const baseDmg = atk * dmgMult * critMult * finalMult * ampMult * statMult;
-            const dps = baseDmg * atkSpeedMult;
+            const dps = baseDmg * rawAPS;
 
+            // 7. 결과 반환
             return { 
+                // 1. 실제 초당 데미지 (유저 비교용 핵심 지표)
                 normal: dps * normalMult, 
                 boss: dps * bossMult,
+
+                // 2. 순수 1타 데미지 (데이터 검증 및 상세 정보용)
                 rawNormal: baseDmg * normalMult,
-                rawBoss: baseDmg * bossMult
+                rawBoss: baseDmg * bossMult,
+
+                // 3. 화면 표시용 공속 데이터
+                aps:displayAPS
             };
         }
 
@@ -626,7 +710,7 @@ function setBadge(key, text, colorClass) {
             
             updateDisplay('res-normal', cur.normal, next.normal, cur.rawNormal, next.rawNormal);
             updateDisplay('res-boss', cur.boss, next.boss, cur.rawBoss, next.rawBoss);
-        }
+            }
 
         function updateDisplay(id, curScore, nextScore, rawPrev, rawNext) {
             const el = document.getElementById(id + '-diff');
@@ -647,6 +731,125 @@ function setBadge(key, text, colorClass) {
         renderInputs();
         calculate();
         loadSystemInfo();
+
+        // ▼▼▼ [새 기능] 마나 효율 계산기 로직 (여기서부터 추가하세요) ▼▼▼
+        // [SYS-01] 마나 효율 정밀 계산 (욕조 모델)
+        // - 틱당 회복량과 소모량을 비교하며 유지 시간 계산
+        // - 기획서 : SYS-01 / 연결화면 : SCR-110
+        // 1. 저장된 마나 설정 불러오기
+        // ▼▼▼ [수정됨] 1. 마나 설정 불러오기 (함수로 변경) ▼▼▼
+        // 1. 마나 설정 불러오기 (회복량 추가)
+        function loadManaSettings() {
+            const saved = localStorage.getItem('myManaSettings');
+            if (saved) {
+                const s = JSON.parse(saved);
+                const maxInp = document.getElementById('inp-max-mana');
+                const costInp = document.getElementById('inp-skill-cost');
+                const regenInp = document.getElementById('inp-mana-regen'); // ✨ 추가
+                
+                if(maxInp) maxInp.value = s.maxMana || '';
+                if(costInp) costInp.value = s.skillCost || '';
+                if(regenInp) regenInp.value = s.manaRegen || ''; // ✨ 추가
+                
+                if(typeof autoSyncManaCalc === 'function') {
+                    autoSyncManaCalc(); 
+                } else {
+                    runManaCalc();
+                }
+            }
+        }
+
+        // 2. 설정 저장 (회복량 추가)
+        function saveManaSettings() {
+            const settings = {
+                maxMana: document.getElementById('inp-max-mana').value,
+                skillCost: document.getElementById('inp-skill-cost').value,
+                manaRegen: document.getElementById('inp-mana-regen').value // ✨ 추가
+            };
+            localStorage.setItem('myManaSettings', JSON.stringify(settings));
+        }
+
+        // 3. 핵심 계산 로직 (회복량 로직 반영!)
+        function simulateManaResource(maxMana, manaCost, attackSpeedPercent, manaRegen) {
+            const POTION_COOLDOWN = 12; 
+            const baseAttackPerSec = 1.0; 
+
+            // 1. 실제 초당 공격 횟수
+            const realAPS = baseAttackPerSec * (1 + (attackSpeedPercent / 100));
+            
+            // 2. 초당 순수 마나 소모량 = (소모량 - 회복량)
+            // 회복량이 소모량보다 많으면 마나가 오히려 차오르므로 0으로 처리 (무한 유지)
+            let netManaPerSec = (manaCost * realAPS) - manaRegen;
+            if (netManaPerSec < 0) netManaPerSec = 0;
+
+            // 3. 12초간 필요한 총 마나
+            const requiredTotalMana = netManaPerSec * POTION_COOLDOWN;
+            
+            // 4. 유지 시간 계산
+            // 순수 소모량이 0이면(회복이 더 빠르면) 무한대
+            const isSafe = maxMana >= requiredTotalMana;
+            let sustainTime = 0;
+            
+            if (netManaPerSec === 0) {
+                sustainTime = POTION_COOLDOWN; // 무한이지만 표기는 12초(MAX)로
+                // 사실상 무한대
+            } else {
+                sustainTime = isSafe ? POTION_COOLDOWN : (maxMana / netManaPerSec);
+            }
+            
+            const efficiency = (sustainTime / POTION_COOLDOWN) * 100;
+
+            return {
+                isSafe: isSafe, // 12초 이상 버티거나, 회복량이 더 많으면 안전
+                efficiency: efficiency.toFixed(1),
+                requiredMana: Math.ceil(requiredTotalMana),
+                aps: realAPS.toFixed(2),
+                sustainTime: sustainTime.toFixed(1)
+            };
+        }
+
+        // 4. 실행 함수 (입력값 받기)
+        function runManaCalc() {
+            const maxEl = document.getElementById('inp-max-mana');
+            const costEl = document.getElementById('inp-skill-cost');
+            const spdEl = document.getElementById('inp-atk-speed');
+            const regenEl = document.getElementById('inp-mana-regen'); // ✨ 추가
+            
+            if(!maxEl || !costEl || !spdEl || !regenEl) return;
+
+            const max = Number(maxEl.value) || 0;
+            const cost = Number(costEl.value) || 0;
+            const spd = Number(spdEl.value) || 0;
+            const regen = Number(regenEl.value) || 0; // ✨ 추가
+
+            saveManaSettings();
+
+            if (max === 0 || cost === 0) return;
+
+            // 계산 수행 (regen 인자 추가)
+            const res = simulateManaResource(max, cost, spd, regen);
+
+            const badge = document.getElementById('badge-efficiency');
+            const resBox = document.getElementById('res-box');
+            
+            // 화면 표시
+            if(document.getElementById('res-time')) document.getElementById('res-time').innerText = res.sustainTime + "초";
+            if(document.getElementById('res-req')) document.getElementById('res-req').innerText = res.requiredMana.toLocaleString();
+            if(document.getElementById('res-aps')) document.getElementById('res-aps').innerText = res.aps;
+
+            if(badge && resBox) {
+                if (res.isSafe) {
+                    badge.innerText = "🟢 무한 유지 가능";
+                    badge.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white bg-green-600 mb-3 shadow-lg";
+                    resBox.className = "bg-[#101113] p-3 rounded border border-green-900/50 text-center transition-colors duration-300";
+                } else {
+                    badge.innerText = `🔴 ${res.efficiency}% 효율 (마나 부족)`;
+                    badge.className = "inline-block px-3 py-1 rounded-full text-[10px] font-bold text-white bg-red-600 mb-3 shadow-lg animate-pulse";
+                    resBox.className = "bg-[#101113] p-3 rounded border border-red-900/50 text-center transition-colors duration-300";
+                }
+            }
+        }
+        loadManaSettings();
     </script>
     
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="zico24820b" data-description="Support me on Buy me a coffee!" data-message="유용하셨다면 커피 한 잔 부탁드려요!" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>

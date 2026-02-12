@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7732517218301279" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7732517218301279" crossorigin="anonymous">
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메이플 키우기 계산기 (TalkView Edition)</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.amplitude.com/script/26b78d7a4668f9cff4a4270923e264b3.js"></script>
+<script>
+window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":true,"autocapture":{"attribution":true,"fileDownloads":true,"formInteractions":true,"pageViews":true,"sessions":true,"elementInteractions":true,"networkTracking":true,"webVitals":true,"frustrationInteractions":{"errorClicks":true,"deadClicks":true,"rageClicks":true}}});</script>
     <style>
         body { background-color: #1a1b1e; color: #e5e7eb; font-family: 'Apple SD Gothic Neo', sans-serif; }
         input[type=number]::-webkit-inner-spin-button, 
@@ -29,12 +35,12 @@
     <div id="global-tooltip" class="fixed hidden bg-black/95 text-white text-xs p-2.5 rounded-lg shadow-2xl z-[9999] max-w-[220px] pointer-events-none leading-relaxed border border-gray-600 backdrop-blur-sm">
     </div>
 
-   
-    <div class="w-full flex justify-center my-4">
-    <a href="https://forum.nexon.com/maplestoryidle-kr/board_view?board=6697&thread=3339452" target="_blank">
-    <img src="images/sugar-event.png" alt="이벤트 배너" class="w-full rounded-xl">
-</a>
-</div>
+    <div class="w-full flex justify-center">
+        <a id="banner-link" href="https://forum.nexon.com/maplestoryidle-kr/board_list?board=6697" target="_blank" class="w-full max-w-5xl hover:opacity-90 transition hidden">
+            <img id="banner-img" src="" alt="공지 배너" class="rounded-b-xl shadow-lg" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;">
+        </a>
+    </div>
+
     <div id="notice-container" class="w-full bg-blue-600 text-white text-sm text-center py-2 hidden notice-bar shadow-md z-10">
         <span class="font-bold">📢 NOTICE:</span> <span id="notice-msg">로딩중...</span>
     </div>
@@ -85,6 +91,7 @@
                              <span class="text-[10px] text-gray-500 border border-gray-500 rounded-full w-3 h-3 flex items-center justify-center">?</span>
                         </div>
                     </h2>
+                    
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <span class="text-[10px] text-gray-400">스킬 계수(%)</span>
@@ -188,24 +195,23 @@
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz8ePLqx1LM7tDmIXWC1Opv6V5IY76_zWScveWl0NsVIgUpypFNNbjLLFuJDA6f2AZ9/exec";
-        const APP_VERSION = "8.5(Fix)"; 
+        const APP_VERSION = "8.6(Fix)"; 
 
         document.getElementById('app-ver').innerText = APP_VERSION;
 
         const fields = [
-            { key: 'atk', label: '공격력' },
-            { key: 'atkSpeed', label: '공격속도%' },
-            { key: 'damage', label: '데미지%' },
-            { key: 'minMaxDmg', label: '최소+최대뎀', desc: '마지막에 2로 나누어 계산됩니다.'}, 
-            { key: 'bossDamage', label: '보공%' },
-            { key: 'normalDamage', label: '일반뎀%'},
-            { key: 'critRate', label: '크확%', desc: '최대 100%까지 적용됩니다.' },
-            { key: 'critDmg', label: '크리데미지%' },
-            { key: 'statPercent', label: '주스텟%' },
-            { key: 'flatMainStat', label: '깡 주스텟' },
-            { key: 'finalDmg', label: '최종뎀%', desc: '최종적으로 곱해지는 데미지입니다.' }, 
-            { key: 'ampDmg', label: '증폭%', desc: '최종 데미지와 별개로 곱연산되는 희귀 스탯입니다.' }
-        ];
+    { key: 'atk', label: '공격력' },
+    { key: 'critRate', label: '크확%', desc: '최대 100%까지 적용됩니다.' },
+    { key: 'critDmg', label: '크뎀%' },
+    { key: 'atkSpeed', label: '공격속도%' },
+    { key: 'statPercent', label: '스텟비례뎀%' },
+    { key: 'damage', label: '데미지%' },
+    { key: 'bossDamage', label: '보뎀%' },
+    { key: 'normalDamage', label: '일몹뎀%' },
+    { key: 'minMaxDmg', label: '최소+최대%', desc: '마지막에 2로 나누어 계산됩니다.' },
+    { key: 'finalDmg', label: '최종뎀%', desc: '최종적으로 곱해지는 데미지입니다.' },
+    { key: 'ampDmg', label: '증폭%', desc: '최종 데미지와 별개로 곱연산되는 희귀 스탯입니다.' }
+];
 
         let baseStats = JSON.parse(localStorage.getItem('myBaseStats_v3')) || {};
         let extraSettings = JSON.parse(localStorage.getItem('myExtraSettings')) || { skillPercent: 100, skillHit: 1 };
@@ -251,7 +257,7 @@
                 // 만약 100%라면? 어차피 효율 0이라서 꼴찌로 갈 테니 상관 없음.
                 // { key: 'critRate', ... } -> 제외 (위에서 처리)
                 { key: 'critDmg', label: '크리뎀', gain: getGain(baseStats, 'critDmg', increaseAmount) },
-                { key: 'statPercent', label: '주스텟', gain: getGain(baseStats, 'statPercent', increaseAmount) }
+                { key: 'statPercent', label: '스텟비례', gain: getGain(baseStats, 'statPercent', increaseAmount) }
             ];
 
             // 4. 효율 높은 순 정렬
@@ -492,6 +498,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" value="${baseStats[f.key] || ''}" placeholder="0"
                             oninput="updateBase('${f.key}', this.value)"
+                            onchange="amplitude.track('Input_Base_Stat', {stat_name: '${f.label}'})"
                             class="${inputClass}">
                     </div>`;
                 
@@ -504,6 +511,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" id="input-A-${f.key}" placeholder="-" 
                             oninput="updateItem('A', '${f.key}', this.value)"
+                            onchange="amplitude.track('Input_Current_Item', {stat_name: '${f.label}'})"
                             class="${inputClass}">
                     </div>`;
 
@@ -517,6 +525,7 @@ function setBadge(key, text, colorClass) {
                         </div>
                         <input type="number" id="input-B-${f.key}" placeholder="-" 
                             oninput="updateItem('B', '${f.key}', this.value)"
+                            onchange="amplitude.track('Input_New_Item', {stat_name: '${f.label}'})"
                             class="${inputClass} focus:ring-red-500">
                     </div>`;
             });
@@ -642,94 +651,5 @@ function setBadge(key, text, colorClass) {
     </script>
     
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="zico24820b" data-description="Support me on Buy me a coffee!" data-message="유용하셨다면 커피 한 잔 부탁드려요!" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
-
-    <!-- Update Popup UI (Right-side panel + FAB) -->
-    <div id="updates-panel" aria-label="업데이트 패널" style="display:none"></div>
-    <div id="updates-fab" aria-label="업데이트 팝업 버튼" style="position: fixed; right: 18px; bottom: 18px; z-index: 60; display:block">
-        <button onclick="toggleUpdatesPanel()" style="width:48px; height:48px; border-radius:999px; background:#2563eb; color:white; border:0; box-shadow:0 6px 14px rgba(0,0,0,.25); font-weight:700">i</button>
-    </div>
-    <div id="updates-toast" aria-live="polite" style="position: fixed; top: 70px; right: 18px; background: #111827; color:white; padding: 12px 16px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.25); display:none; z-index: 70; max-width:320px;">새 업데이트가 준비됐습니다.</div>
-
-    <style>
-        /* Updates panel styles (desktop) + mobile bottom-sheet */
-        #updates-panel {
-            position: fixed; top: 0; right: 0; height: 100%; width: 360px; background: white; border-left: 1px solid #e5e7eb; transform: translateX(100%); transition: transform .25s ease; z-index: 60; box-shadow: -8px 0 20px rgba(0,0,0,.15);
-        }
-        #updates-panel.open { transform: translateX(0); }
-        @media (max-width: 768px) {
-            #updates-panel {
-                width: 100%; height: 60vh; top: auto; bottom: 0; transform: translateY(100%);
-            }
-            #updates-panel.open { transform: translateY(0); }
-        }
-        #updates-panel .header { padding: 12px; border-bottom: 1px solid #e5e7eb; display:flex; justify-content: space-between; align-items: center; }
-        #updates-content { padding: 12px; overflow: auto; height: calc(100% - 52px); }
-        #updates-content ul { margin: 0; padding-left: 20px; }
-    </style>
-
-    <script>
-        // Updates data source (can be loaded from server later)
-        const updatesData = [
-            {
-                version: '8.6(Fix)',
-                date: '2026-01-21',
-                notes: [
-                    'UI 개선: 업데이트 팝업 추가',
-                    '크래시 방지: 로딩 안정성 개선',
-                    '성능 개선: 렌더링 최적화'
-                ]
-            }
-        ];
-
-        function renderUpdatesPanel() {
-            const panel = document.getElementById('updates-panel');
-            const updatesHTML = `
-                <div class="header"><div style="font-weight:700; font-size:16px">업데이트 안내</div><button onclick="toggleUpdatesPanel()" style="border:0; background:transparent; font-size:14px; color:#555">닫기</button></div>
-                <div id="updates-content" style="padding:12px; overflow:auto; height:calc(100% - 52px);"></div>
-            `;
-            panel.innerHTML = updatesHTML;
-            // populate updates
-            const content = document.getElementById('updates-content');
-            content.innerHTML = updatesData.map(u => `
-                <div style="border:1px solid #eee; padding:10px; border-radius:8px; margin-bottom:10px; background:#fff">
-                    <div style="font-weight:600; margin-bottom:6px">${u.version} — ${u.date}</div>
-                    <ul style="margin:0; padding-left:18px;">
-                        ${u.notes.map(n => `<li>${n}</li>`).join('')}
-                    </ul>
-                </div>
-            `).join('');
-        }
-
-        function toggleUpdatesPanel() {
-            const panel = document.getElementById('updates-panel');
-            if(!panel) return;
-            const isOpen = panel.classList.contains('open');
-            if(isOpen) {
-                panel.classList.remove('open');
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'block';
-                panel.classList.add('open');
-            }
-        }
-
-        function showUpdatesToast(message) {
-            const toast = document.getElementById('updates-toast');
-            if(!toast) return;
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 4000);
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderUpdatesPanel();
-            // show a light toast once per open
-            const ls = localStorage.getItem('updates_seen_v6');
-            if(!ls){
-                showUpdatesToast('새 업데이트가 준비됐습니다. 우측의 업데이트 아이콘을 눌러 확인해보세요!');
-                localStorage.setItem('updates_seen_v6', '1');
-            }
-        });
-    </script>
 </body>
 </html>
