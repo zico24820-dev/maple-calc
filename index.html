@@ -379,9 +379,8 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
 
             const minMaxAvg = (stats.minMaxDmg || 0) / 2;
             const totalDmgPercent = (stats.damage || 0) + minMaxAvg;
-            
             const dmgMult = 1 + (totalDmgPercent / 100);
-            
+    
             const critRate = Math.min((stats.critRate || 0), 100);
             const critDmg = stats.critDmg || 0;
             const critMult = 1 + ((critRate / 100) * (critDmg / 100));
@@ -401,7 +400,7 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
 
             // 3. [핵심] 정밀 계산용 APS (0.1%의 차이도 데미지에 반영)
             // 예: 66.6% -> 1.666, 66.7% -> 1.667
-            const rawAPS = baseAPS * (1 + (atkSpeed / 100));
+            const rawAPS = baseAPS * (1 + (atkSpeedPct / 100));
 
             // 4. 유저 표기용 APS (MGF 사이트 대조용 반올림)
             const displayAPS = parseFloat(rawAPS.toFixed(2));
