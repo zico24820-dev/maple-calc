@@ -154,8 +154,12 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
             </p>
         </div>
     </div>
-
+            
     <div class="px-6 pb-6">
+        <!-- 
+            여기서부터 마나 효율 분석기 화면 
+        - 기획서 : UI-01 / 연결화면:SCR-110
+        -->
             <details class="bg-[#141517] border border-blue-900/30 rounded-lg overflow-hidden group">
                 <summary class="flex items-center justify-between p-3 cursor-pointer select-none text-blue-400 hover:text-blue-300 transition bg-blue-900/10">
                     <span class="text-xs font-bold flex items-center gap-2">
@@ -173,6 +177,7 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
                                 <label class="text-[10px] text-gray-400 block mb-1">최대 마나</label>
                                 <input type="number" id="inp-max-mana" placeholder="1073" oninput="runManaCalc()" class="input-box w-full rounded px-2 py-1 text-xs h-8 focus:ring-1 focus:ring-blue-500">
                             </div>
+
                             <div>
                                 <label class="text-[10px] text-gray-400 block mb-1">스킬 소모값</label>
                                 <input type="number" id="inp-skill-cost" placeholder="53" oninput="runManaCalc()" class="input-box w-full rounded px-2 py-1 text-xs h-8 focus:ring-1 focus:ring-blue-500">
@@ -259,7 +264,7 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz8ePLqx1LM7tDmIXWC1Opv6V5IY76_zWScveWl0NsVIgUpypFNNbjLLFuJDA6f2AZ9/exec";
-        const APP_VERSION = "8.6(Fix)"; 
+        const APP_VERSION = "8.7(Fix)"; 
 
         document.getElementById('app-ver').innerText = APP_VERSION;
 
@@ -380,6 +385,12 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
             const critRate = Math.min((stats.critRate || 0), 100);
             const critDmg = stats.critDmg || 0;
             const critMult = 1 + ((critRate / 100) * (critDmg / 100));
+
+            // --------------------------------------------------------
+            // [SYS-02] APS 정밀 수식 및 공격 속도 로직 시작
+            // - 기획 : MGF 리버스 엔지니어링 기반 선형 수식 (최대 150% 제한)
+            // 0 연결 화면 : SCR-100
+            //---------------------------------------------------------
 
             //  1. 공격 속도 제한 (분석 결과 최대 150%)
             const atkSpeedPct = Math.min((stats.atkSpeed || 0), 150);
