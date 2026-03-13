@@ -211,6 +211,9 @@
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="doLogin()">로그인</button>
         </div>
+         <p style="text-align:center; margin-top:10px; font-size:13px; color:var(--text-sub);">
+            <span onclick="showResetModal()" style="color:var(--point-sub); cursor:pointer;">비밀번호 찾기</span>
+        </p>
         <p style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-sub);">
             길드가 없으신가요? 
             <span onclick="showRegisterModal()" style="color:var(--point-sub); cursor:pointer; font-weight:700;">길드 등록하기</span>
@@ -258,6 +261,23 @@
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="doRegister()">가입하기</button>
             <button class="pw-btn-cancel" onclick="showLoginModal()">로그인으로</button>
+        </div>
+    </div>
+</div>
+<!-- 비밀번호 찾기 모달 -->
+<div class="pw-modal-bg" id="resetModalBg">
+    <div class="pw-modal">
+        <h3>🔑 비밀번호 찾기</h3>
+        <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">가입한 이메일로 재설정 링크를 보내드려요</p>
+        <div class="pw-input-wrap">
+            <input type="email" id="resetEmail" placeholder="이메일"
+                onkeydown="if(event.key==='Enter') doResetPassword()"
+                style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
+        </div>
+        <p id="resetMsg" style="font-size:13px; margin-bottom:10px; display:none;"></p>
+        <div class="pw-btns">
+            <button class="pw-btn-ok" onclick="doResetPassword()">전송</button>
+            <button class="pw-btn-cancel" onclick="showLoginModal()">돌아가기</button>
         </div>
     </div>
 </div>
@@ -1046,8 +1066,40 @@ function showRegisterModal() {
 
 function showLoginModal() {
     document.getElementById('registerModalBg').classList.remove('show');
+    document.getElementById('resetModalBg').classList.remove('show');
     document.getElementById('loginModalBg').classList.add('show');
     setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+}
+
+function showResetModal() {
+    document.getElementById('loginModalBg').classList.remove('show');
+    document.getElementById('resetModalBg').classList.add('show');
+    setTimeout(() => document.getElementById('resetEmail').focus(), 100);
+}
+
+async function doResetPassword() {
+    const email = document.getElementById('resetEmail').value;
+    const msg   = document.getElementById('resetMsg');
+    if (!email) {
+        msg.style.display = 'block';
+        msg.style.color = '#ff5252';
+        msg.textContent = '이메일을 입력해주세요.';
+        return;
+    }
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    });
+    if (res.ok) {
+        msg.style.display = 'block';
+        msg.style.color = '#4ade80';
+        msg.textContent = '재설정 링크를 이메일로 보냈어요!';
+    } else {
+        msg.style.display = 'block';
+        msg.style.color = '#ff5252';
+        msg.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+    }
 }
 
 function toggleRegEye() {
