@@ -248,7 +248,7 @@
 
         <!-- 서버명 -->
         <div class="pw-input-wrap">
-            <input type="text" id="regServerName" placeholder="서버명 (예: 스카니아)"
+            <input type="text" id="regServerName" placeholder="서버명 (예: 스카니아-10)"
                 onkeydown="if(event.key==='Enter') doRegister()"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
         </div>
@@ -335,7 +335,6 @@
     window.onload = async function () {
     const offset = new Date().getTimezoneOffset() * 60000;
     todayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
-    initServerSelect();
 
     // ✅ 추가 — sessionStorage에서 로그인 정보 복원
     accessToken      = sessionStorage.getItem('accessToken');
@@ -1056,19 +1055,6 @@ function toggleRegEye() {
     input.type = input.type === 'password' ? 'text' : 'password';
     input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
 }
-
-// 서버 채널 드롭다운 동적 생성
-function initServerSelect() {
-    const select = document.getElementById('regServerName');
-    if (!select) return;
-    for (let i = 1; i <= 95; i++) {
-        const opt = document.createElement('option');
-        opt.value = `스카니아 ${i}채널`;
-        opt.textContent = `스카니아 ${i}채널`;
-        select.appendChild(opt);
-    }
-}
-
 function toggleLoginEye() {
     const input = document.getElementById('loginPw');
     input.type = input.type === 'password' ? 'text' : 'password';
