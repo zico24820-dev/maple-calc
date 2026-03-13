@@ -382,9 +382,11 @@
         document.getElementById('logoutBtn').style.display = 'block';
     }
 
-    // 비밀번호 재설정 링크로 들어온 경우 감지
-    const hash = window.location.hash;
-    if (hash.includes('type=recovery')) {
+    // 비밀번호 재설정 링크로 들어온 경우 /guild로 리다이렉트
+        const hash = window.location.hash;
+        if (hash.includes('type=recovery')) {
+        window.location.href = '/guild' + hash;
+        }
         const params = new URLSearchParams(hash.substring(1));
         accessToken = params.get('access_token');
         document.getElementById('newPwModalBg').classList.add('show');
