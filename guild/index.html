@@ -1406,7 +1406,8 @@ async function saveAllMembers(memberList) {
                     })
                 });
                 const newMember = await res.json();
-                m.id = String(newMember[0].id);
+                console.log('INSERT 응답:', newMember);
+                m.id = String(newMember[0]?.id || newMember?.id || Date.now());
             }
 
             // history 저장 - 에러 무시
