@@ -300,7 +300,7 @@
     // ✅ [추가] Supabase 연동 설정 — GAS 환경 제거 후 직접 API 호출로 전환
     const SUPABASE_URL = 'https://pnjlhcoscylijvuzjuqc.supabase.co'; // Supabase 프로젝트 URL
     const SUPABASE_KEY = 'sb_publishable_dOfrc4rCcP5TKLMUZkaGBQ_NPZlwWyU'; // Supabase anon public key
-    let access_token   = null;  // 로그인 성공 시 발급되는 JWT 토큰 - API 호출 시 Authorization 헤더에 사용
+    let accessToken   = null;  // 로그인 성공 시 발급되는 JWT 토큰 - API 호출 시 Authorization 헤더에 사용
     let currentUserId  = null;  // 로그인한 사용자 ID ~ 내 길드 조회 시 auth_user_id 필터에 사용 
     let currentUserEmail = null; // ✅ [추가] 로그인한 이메일 저장
 
