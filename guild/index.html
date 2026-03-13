@@ -880,6 +880,14 @@ async function confirmPw() {
     const pw = document.getElementById('pwInput').value;
     if (!pw) return;
     closePwModal();
+     // ✅ 욕설 필터 체크
+    for (const m of members) {
+        const ok = checkBadWords({
+            '닉네임': m.name,
+            '비고': m.note
+        });
+        if (!ok) return; // 필터 걸리면 저장 중단
+    }
 
     // 오늘 저장 시 history에도 동시 기록
     // 변경 없음 - 기존 로직 유지 
@@ -992,19 +1000,34 @@ async function doLogin() {
     }
 }
 
-// ✅ [추가] 회원가입 + 길드 생성 함수
-async function doRegister() {
-    const email      = document.getElementById('regEmail').value;
-    const pw         = document.getElementById('regPw').value;
-    const guildName  = document.getElementById('regGuildName').value;
-    const serverName = document.getElementById('regServerName').value;
+    // ✅ [추가] 회원가입 + 길드 생성 함수
+    async function doRegister() {
+        const email      = document.getElementById('regEmail').value;
+        const pw         = document.getElementById('regPw').value;
+        const guildName  = document.getElementById('regGuildName').value;
+        const serverName = document.getElementById('regServerName').value;
 
-    // 입력값 검증
-    if (!email || !pw || !guildName || !serverName) {
+        // 1. 빈칸 체크 (무조건 먼저)
+        if (!email || !pw || !guildName || !serverName) {
         document.getElementById('registerError').style.display = 'block';
         document.getElementById('registerError').textContent = '모든 항목을 입력해주세요.';
         return;
     }
+
+        // ✅ 욕설 필터 체크
+        const ok = checkBadWords({
+            '길드명': guildName,
+            '서버명': serverName
+        });
+        if (!ok) return;
+
+        // ✅ 서버명 형식 검증 (스카니아-숫자 only)
+        const serverPattern = /^스카니아-\d+$/;
+        if (!serverPattern.test(serverName.trim())) {
+        document.getElementById('registerError').style.display = 'block';
+        document.getElementById('registerError').textContent = '서버명은 "스카니아-숫자" 형식으로 입력해주세요. (예: 스카니아-10)';
+        return;
+        }
 
     try {
         // 1단계: Supabase auth 회원가입
@@ -1310,6 +1333,38 @@ async function selectGuild(guildId) {
     } else {
         await refreshData(guildId);
     }
+}
+
+// ===========================
+// 욕설/성드립/19금 필터
+// ===========================
+const BAD_WORDS = [
+    // 욕설
+    '씨발','시발','씨팔','시팔','ㅅㅂ','ㅆㅂ','개새','개색','개세',
+    '지랄','존나','존내','ㅈㄴ','병신','ㅂㅅ','미친','꺼져','닥쳐',
+    '보지','자지','좆','쪽팔','창녀','년놈','새끼','섹스','섹쓰','cex','Sex','섹스',
+    // 성드립/19금
+    '야동','av','섹','성관계','강간','성폭','항문','자위','딸딸',
+    '페니스','보지','질내','사정','사까시','원나잇','노브라','쾌감',
+    // 기타
+    '홀로','나치','히틀러','니애미','노무현','무현','앙기모찌'
+];
+
+function containsBadWord(str) {
+    if (!str) return false;
+    const normalized = str.replace(/\s/g, '').toLowerCase();
+    return BAD_WORDS.some(word => normalized.includes(word.toLowerCase()));
+}
+
+function checkBadWords(fields) {
+    // fields: { 필드명: 값 } 객체
+    for (const [label, value] of Object.entries(fields)) {
+        if (containsBadWord(value)) {
+            alert(`⚠️ "${label}"에 사용할 수 없는 단어가 포함되어 있습니다.\n저장이 취소됩니다.`);
+            return false;
+        }
+    }
+    return true;
 }
 
     // 이슈 #15(XSS): innerHTML 삽입 시 스크립트 실행 방지
