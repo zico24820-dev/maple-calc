@@ -1116,7 +1116,10 @@ async function doResetPassword() {
     const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
         method: 'POST',
         headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ 
+    email,
+    redirectTo: 'https://maple-calc.vercel.app/guild'
+})
     });
     if (res.ok) {
         // 이메일 도메인 분기
