@@ -836,13 +836,11 @@
 
         // 이슈 #5: 인스턴스 재사용 → 있으면 데이터만 교체, 없으면 새로 생성
         if (myChart) {
-            myChart.data.labels = dates.map(d => d.slice(5));
-            myChart.data.datasets[0].data = chartData;
-            myChart.update();
-        } else {
+            myChart.destroy();
+            myChart = null;
+            }
             myChart = new Chart(ctx, chartConfig);
-        }
-    }
+         }
 
 
     // ===========================
@@ -1045,9 +1043,9 @@ async function doRegister() {
         accessToken      = loginData.access_token;
         currentUserId    = loginData.user.id;
         currentUserEmail = email;
-        sessionStorage.setItem('accessToken', loginData.access_token);  // ✅ 추가
-        sessionStorage.setItem('currentUserId', loginData.user.id);     // ✅ 추가
-        sessionStorage.setItem('currentUserEmail', email);              // ✅ 추가
+        localStorage.setItem('accessToken', loginData.access_token);
+        localStorage.setItem('currentUserId', loginData.user.id);
+        localStorage.setItem('currentUserEmail', email);
 
         // 3단계: guilds 테이블에 길드 생성
         const guildRes = await fetch(`${SUPABASE_URL}/rest/v1/guilds`, {
