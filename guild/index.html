@@ -281,6 +281,25 @@
         </div>
     </div>
 </div>
+<!-- 새 비밀번호 설정 모달 -->
+<div class="pw-modal-bg" id="newPwModalBg">
+    <div class="pw-modal">
+        <h3>🔑 새 비밀번호 설정</h3>
+        <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">새로운 비밀번호를 입력해주세요</p>
+        <div class="pw-input-wrap">
+            <input type="password" id="newPwInput" placeholder="새 비밀번호"
+                onkeydown="if(event.key==='Enter') doUpdatePassword()"
+                style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
+            <span class="pw-eye" onclick="toggleNewPwEye()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+        </div>
+        <p id="newPwMsg" style="font-size:13px; margin-bottom:10px; display:none;"></p>
+        <div class="pw-btns">
+            <button class="pw-btn-ok" onclick="doUpdatePassword()">변경하기</button>
+        </div>
+    </div>
+</div>
 
 <!-- 길드 목록 모달 -->
 <div class="pw-modal-bg" id="guildListModalBg">
@@ -356,7 +375,6 @@
     const offset = new Date().getTimezoneOffset() * 60000;
     todayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
 
-    // ✅ 추가 — sessionStorage에서 로그인 정보 복원
     accessToken      = sessionStorage.getItem('accessToken');
     currentUserId    = sessionStorage.getItem('currentUserId');
     currentUserEmail = sessionStorage.getItem('currentUserEmail');
@@ -364,8 +382,17 @@
     document.getElementById('recordDate').value = todayStr;
     document.getElementById('recordDate').setAttribute('max', todayStr);
 
-    document.getElementById('guildListModalBg').classList.add('show');
-    await loadGuildListPublic();
+    // 비밀번호 재설정 링크로 들어온 경우 감지
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery')) {
+        const params = new URLSearchParams(hash.substring(1));
+        accessToken = params.get('access_token');
+        document.getElementById('newPwModalBg').classList.add('show');
+        setTimeout(() => document.getElementById('newPwInput').focus(), 100);
+    } else {
+        document.getElementById('guildListModalBg').classList.add('show');
+        await loadGuildListPublic();
+    }
 
     logVisit();
 };
@@ -1100,6 +1127,55 @@ async function doResetPassword() {
         msg.style.color = '#ff5252';
         msg.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
     }
+}
+async function doUpdatePassword() {
+    const newPw = document.getElementById('newPwInput').value;
+    const msg   = document.getElementById('newPwMsg');
+
+    if (!newPw || newPw.length < 6) {
+        msg.style.display = 'block';
+        msg.style.color = '#ff5252';
+        msg.textContent = '비밀번호는 6자 이상이어야 해요.';
+        return;
+    }
+
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        method: 'PUT',
+        headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password: newPw })
+    });
+    const data = await res.json();
+
+    if (data.id) {
+        msg.style.display = 'block';
+        msg.style.color = '#4ade80';
+        msg.textContent = '비밀번호가 변경됐어요!';
+        setTimeout(async () => {
+            document.getElementById('newPwModalBg').classList.remove('show');
+            // URL hash 제거
+            history.replaceState(null, '', window.location.pathname);
+            await showGuildListModal();
+        }, 1500);
+    } else {
+        msg.style.display = 'block';
+        msg.style.color = '#ff5252';
+        msg.textContent = '링크가 만료됐어요. 다시 시도해주세요.';
+        setTimeout(() => {
+            document.getElementById('newPwModalBg').classList.remove('show');
+            document.getElementById('loginModalBg').classList.add('show');
+        }, 2000);
+    }
+}
+
+function toggleNewPwEye() {
+    const input = document.getElementById('newPwInput');
+    const span  = input.nextElementSibling;
+    input.type = input.type === 'password' ? 'text' : 'password';
+    span.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
 }
 
 function toggleRegEye() {
