@@ -1119,9 +1119,31 @@ async function doResetPassword() {
         body: JSON.stringify({ email })
     });
     if (res.ok) {
+        // 이메일 도메인 분기
+        let mailLink = '';
+if (email.includes('@gmail.com')) {
+    mailLink = 'https://mail.google.com';
+    } else if (email.includes('@naver.com')) {
+    mailLink = 'https://mail.naver.com';
+    } else if (email.includes('@kakao.com') || email.includes('@daum.net') || email.includes('@hanmail.net')) {
+    mailLink = 'https://mail.kakao.com';
+    } else if (email.includes('@nate.com')) {
+    mailLink = 'https://mail.nate.com';
+    } else if (email.includes('@outlook.com') || email.includes('@hotmail.com')) {
+    mailLink = 'https://outlook.live.com';
+    } else if (email.includes('@icloud.com')) {
+    mailLink = 'https://www.icloud.com/mail';
+    } else if (email.includes('@yahoo.com')) {
+    mailLink = 'https://mail.yahoo.com';
+    } else {
+    mailLink = '';
+    }
+
         msg.style.display = 'block';
         msg.style.color = '#4ade80';
-        msg.textContent = '재설정 링크를 이메일로 보냈어요!';
+        msg.innerHTML = mailLink
+            ? `재설정 링크를 보냈어요! <a href="${mailLink}" target="_blank" style="color:#ffb300; font-weight:900;">📬 이메일 바로가기</a>`
+            : '재설정 링크를 이메일로 보냈어요!';
     } else {
         msg.style.display = 'block';
         msg.style.color = '#ff5252';
