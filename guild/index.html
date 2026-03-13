@@ -391,7 +391,7 @@
         accessToken = params.get('access_token');
         document.getElementById('newPwModalBg').classList.add('show');
         setTimeout(() => document.getElementById('newPwInput').focus(), 100);
-    } else {
+        } else {
         document.getElementById('guildListModalBg').classList.add('show');
         await loadGuildListPublic();
     }
