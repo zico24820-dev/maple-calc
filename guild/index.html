@@ -712,24 +712,24 @@
 
     // 이슈 #13: unshift()로 앞에 삽입 + id 내림차순 정렬 → 신규 멤버 항상 맨 위
     function addNewMemberRow() {
-        gatherDataFromTable();
-        members.unshift({
-            id: Date.now().toString(),
-            name: '새 길드원',
-            job: '비숍',
-            power: "0",
-            contribution: '0',
-            subjugation: 'X',
-            guildWar: 'X',
-            training: 'X',
-            kakao: 'O',
-            inactive: '',
-            note: '',
-            history: {}
-        });
-        currentSort = { key: 'id', order: 'desc' };
-        render();
-    }
+    gatherDataFromTable();
+    members.unshift({
+        id: 'new_' + Date.now().toString(),
+        name: '새 길드원',
+        job: '비숍',
+        power: "0",
+        contribution: '0',
+        subjugation: 'X',
+        guildWar: 'X',
+        training: 'X',
+        kakao: 'O',
+        inactive: '',
+        note: '',
+        history: {}
+    });
+    currentSort = { key: 'id', order: 'desc' };
+    render();
+}
 
     // 같은 컬럼 재클릭: 오름/내림차순 토글 / 다른 컬럼: 내림차순 초기화
     function handleSort(key) {
@@ -1361,30 +1361,56 @@ async function getMembers(guildId) {
 async function saveAllMembers(memberList) {
     try {
         for (const m of memberList) {
-            await fetch(`${SUPABASE_URL}/rest/v1/members?id=eq.${m.id}`, {
-                method: 'PATCH',
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nickname:      m.name,
-                    job:           m.job,
-                    current_power: String(parsePower(m.power)),
-                    subjugation:   m.subjugation,
-                    guild_war:     m.guildWar,
-                    training:      m.training,
-                    kakao:         m.kakao,
-                    contribution:  Number(m.contribution || 0),
-                    inactive:      m.inactive,
-                    note:          m.note
-                })
-            });
+            if (m.id && !String(m.id).startsWith('new_')) {
+                await fetch(`${SUPABASE_URL}/rest/v1/members?id=eq.${m.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nickname:      m.name,
+                        job:           m.job,
+                        current_power: String(parsePower(m.power)),
+                        subjugation:   m.subjugation,
+                        guild_war:     m.guildWar,
+                        training:      m.training,
+                        kakao:         m.kakao,
+                        contribution:  Number(m.contribution || 0),
+                        inactive:      m.inactive,
+                        note:          m.note
+                    })
+                });
+            } else {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/members`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        guild_id:      currentGuildId,
+                        nickname:      m.name,
+                        job:           m.job,
+                        current_power: String(parsePower(m.power)),
+                        subjugation:   m.subjugation,
+                        guild_war:     m.guildWar,
+                        training:      m.training,
+                        kakao:         m.kakao,
+                        contribution:  Number(m.contribution || 0),
+                        inactive:      m.inactive,
+                        note:          m.note
+                    })
+                });
+                const newMember = await res.json();
+                m.id = String(newMember[0].id);
+            }
 
-            // history 저장
             for (const [date, power] of Object.entries(m.history || {})) {
-               await fetch(`${SUPABASE_URL}/rest/v1/histories`, {
+                await fetch(`${SUPABASE_URL}/rest/v1/histories`, {
                     method: 'POST',
                     headers: {
                         'apikey': SUPABASE_KEY,
@@ -1397,7 +1423,7 @@ async function saveAllMembers(memberList) {
                         member_id:      Number(m.id),
                         recorded_power: String(parsePower(power)),
                         recorded_date:  date
-                     })
+                    })
                 });
             }
         }
@@ -1419,7 +1445,6 @@ async function saveAllMembers(memberList) {
             btn.style.background = '';
         }, 2000);
     }
-    // await refreshData(currentGuildId);
     drawChart();
 }
 </script>
