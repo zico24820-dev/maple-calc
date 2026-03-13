@@ -1399,10 +1399,23 @@ async function saveAllMembers(memberList) {
                 });
             }
         }
-        alert('저장 완료!');
+        const btn = document.querySelector('.btn-final');
+        const original = btn.textContent;
+        btn.textContent = '✅ 저장됨!';
+        btn.style.background = '#4ade80';
+        setTimeout(() => {
+        btn.textContent = original;
+         btn.style.background = '';
+        }, 2000);
     } catch(e) {
         console.error('저장 실패:', e);
-        alert('저장에 실패했습니다.');
+        const btn = document.querySelector('.btn-final');
+        btn.textContent = '❌ 저장 실패';
+        btn.style.background = '#ff5252';
+        setTimeout(() => {
+            btn.textContent = '🔒 저장하기';
+            btn.style.background = '';
+        }, 2000);
     }
     drawChart();
 }
