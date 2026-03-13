@@ -898,23 +898,34 @@ async function confirmPw() {
     }
 
     // ✅ [추가] 로그인 모달 함수
-if (data.access_token) {
-    accessToken      = data.access_token;
-    currentUserId    = data.user.id;
-    currentUserEmail = email;
-    sessionStorage.setItem('accessToken', data.access_token);   // ✅ 추가
-    sessionStorage.setItem('currentUserId', data.user.id);      // ✅ 추가
-    sessionStorage.setItem('currentUserEmail', email);          // ✅ 추가
-    document.getElementById('loginModalBg').classList.remove('show');
+async function doLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const pw = document.getElementById('loginPw').value;
+    
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pw })
+    });
+    const data = await res.json();
 
-    if (pendingGuildId) {
-        await refreshData(pendingGuildId);
-        pendingGuildId = null;
+    if (data.access_token) {
+        accessToken      = data.access_token;
+        currentUserId    = data.user.id;
+        currentUserEmail = email;
+        sessionStorage.setItem('accessToken', data.access_token);
+        sessionStorage.setItem('currentUserId', data.user.id);
+        sessionStorage.setItem('currentUserEmail', email);
+        document.getElementById('loginModalBg').classList.remove('show');
+        if (pendingGuildId) {
+            await refreshData(pendingGuildId);
+            pendingGuildId = null;
+        } else {
+            await showGuildListModal();
+        }
     } else {
-        await showGuildListModal();
+        document.getElementById('loginError').style.display = 'block';
     }
-} else {
-    document.getElementById('loginError').style.display = 'block';
 }
 
 // ✅ [추가] 회원가입 + 길드 생성 함수
