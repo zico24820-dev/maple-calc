@@ -337,6 +337,8 @@
     let accessToken   = null;  // 로그인 성공 시 발급되는 JWT 토큰 - API 호출 시 Authorization 헤더에 사용
     let currentUserId  = null;  // 로그인한 사용자 ID ~ 내 길드 조회 시 auth_user_id 필터에 사용 
     let currentUserEmail = null; // ✅ [추가] 로그인한 이메일 저장
+    // 길드 전역변수 
+    let currentGuildId = null;
 
 
     // 이슈 #4: BigInt 단위 상수화 → 나누기/곱하기 단위 불일치 버그 방지
@@ -471,16 +473,15 @@
     //       GAS는 구글 서버가 중간에서 실행 → Supabase는 브라우저에서 직접 DB 호출
     // ===========================
     async function refreshData(guildId) {
-        try {
-            // ✅ [변경] getMembersFromSheet() → getMembers()
-            // GAS 구글 시트에서 읽던 것을 Supabase DB에서 직접 읽어오도록 교체
-            members = await getMembers(guildId);
-            render();
-        } catch(err) {
-            console.error('데이터 로드 실패:', err);
-            alert('데이터를 불러오지 못했습니다. 새로고침 해주세요.');
-        }
+    currentGuildId = guildId;
+    try {
+        members = await getMembers(guildId);
+        render();
+    } catch(err) {
+        console.error('데이터 로드 실패:', err);
+        alert('데이터를 불러오지 못했습니다. 새로고침 해주세요.');
     }
+}
 
     // ===========================
     // 날짜 버튼 렌더링
@@ -1404,8 +1405,8 @@ async function saveAllMembers(memberList) {
         btn.textContent = '✅ 저장됨!';
         btn.style.background = '#4ade80';
         setTimeout(() => {
-        btn.textContent = original;
-         btn.style.background = '';
+            btn.textContent = original;
+            btn.style.background = '';
         }, 2000);
     } catch(e) {
         console.error('저장 실패:', e);
@@ -1417,6 +1418,7 @@ async function saveAllMembers(memberList) {
             btn.style.background = '';
         }, 2000);
     }
+    await refreshData(currentGuildId);
     drawChart();
 }
 </script>
