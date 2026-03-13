@@ -370,9 +370,9 @@
     const offset = new Date().getTimezoneOffset() * 60000;
     todayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
 
-    accessToken      = sessionStorage.getItem('accessToken');
-    currentUserId    = sessionStorage.getItem('currentUserId');
-    currentUserEmail = sessionStorage.getItem('currentUserEmail');
+    accessToken      = localStorage.getItem('accessToken');
+    currentUserId    = localStorage.getItem('currentUserId');
+    currentUserEmail = localStorage.getItem('currentUserEmail');
 
     document.getElementById('recordDate').value = todayStr;
     document.getElementById('recordDate').setAttribute('max', todayStr);
@@ -382,16 +382,15 @@
         document.getElementById('logoutBtn').style.display = 'block';
     }
 
-    // 비밀번호 재설정 링크로 들어온 경우 /guild로 리다이렉트
-        const hash = window.location.hash;
-        if (hash.includes('type=recovery')) {
-        window.location.href = '/guild' + hash;
-        }
+    // 비밀번호 재설정 링크로 들어온 경우 감지
+    const hash = window.location.hash || '';
+    if (hash.includes('type=recovery')) {
         const params = new URLSearchParams(hash.substring(1));
         accessToken = params.get('access_token');
+        document.getElementById('guildListModalBg').classList.remove('show');
         document.getElementById('newPwModalBg').classList.add('show');
         setTimeout(() => document.getElementById('newPwInput').focus(), 100);
-        } else {
+    } else {
         document.getElementById('guildListModalBg').classList.add('show');
         await loadGuildListPublic();
     }
