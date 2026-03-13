@@ -48,11 +48,42 @@ window.amplitude.init('26b78d7a4668f9cff4a4270923e264b3', {"fetchRemoteConfig":t
     <div class="w-full max-w-5xl bg-[#2C2E33] rounded-xl shadow-2xl border border-[#373A40] overflow-hidden mt-4 md:mt-8">
         
         <header class="bg-[#25262B] p-5 border-b border-[#373A40] flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold flex items-center gap-2 text-white">
-                    ⚔️ 메이플 키우기 스펙 계산기
-                    <span class="text-[10px] bg-gray-700 px-1.5 py-0.5 rounded text-gray-300 border border-gray-600">v<span id="app-ver">loading</span></span>
-                </h1>
+    <div class="flex items-center gap-3">
+        <h1 class="text-xl font-bold flex items-center gap-2 text-white">
+            ⚔️ 메이플 키우기 스펙 계산기
+            <span class="text-[10px] bg-gray-700 px-1.5 py-0.5 rounded text-gray-300 border border-gray-600">v<span id="app-ver">loading</span></span>
+        </h1>
+        <a href="/guild" style="background:linear-gradient(135deg,#ff5e00,#ffb300);color:#fff;padding:6px 14px;border-radius:8px;font-weight:900;text-decoration:none;font-size:13px;">🍁 길드 관리</a>
+    </div>
+            <div class="flex gap-4 text-xs text-gray-400">
+                <button onclick="resetAllData()" class="hover:text-red-400 underline">전체 초기화</button>
+                <span id="save-status" class="text-green-500">자동저장 ON</span>
+            </div>
+        </header>
+
+        <div class="px-6 pt-4">
+            <details class="bg-[#1A1B1E] border border-[#373A40] rounded-lg overflow-hidden group">
+                <summary class="flex items-center justify-between p-3 cursor-pointer select-none text-gray-400 hover:text-white transition">
+                    <span class="text-xs font-bold flex items-center gap-2">
+                        💡 처음이신가요? <span class="text-[#4dabf7]">사용법 보기</span>
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-open:rotate-180 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </summary>
+                <div class="p-4 border-t border-[#373A40] text-xs text-gray-300 leading-relaxed bg-[#141517]">
+                    <ol class="list-decimal pl-4 space-y-2">
+                        <li><strong class="text-yellow-500">전투 설정:</strong> 사용하는 스킬의 계수와 타수를 입력하세요.</li>
+                        <li><strong class="text-[#4dabf7]">내 스텟창:</strong> 스텟을 입력하면 <span class="text-red-400 font-bold">🔥부족</span> 뱃지로 가장 시급한 스탯을 알려줍니다.</li>
+                        <li><strong class="text-blue-300">아이템 비교:</strong> 아이템 변경 시 데미지 변화를 확인하세요.</li>
+                        <li><strong class="text-red-400">주의:</strong> 크확이 100%가 안 되면 딜 손실이 큽니다. <span class="text-red-400 font-bold">🎯필수</span> 뱃지가 뜨면 우선적으로 맞추세요.</li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-3 bg-[#1A1B1E] p-4 rounded-lg border 
             </div>
             <div class="flex gap-4 text-xs text-gray-400">
                 <button onclick="resetAllData()" class="hover:text-red-400 underline">전체 초기화</button>
