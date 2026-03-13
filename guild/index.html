@@ -1402,6 +1402,7 @@ async function saveAllMembers(memberList) {
             }
         }
         alert('저장 완료!');
+        drawChart();
     } catch(e) {
         console.error('저장 실패:', e);
         alert('저장에 실패했습니다.');
