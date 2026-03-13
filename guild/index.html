@@ -1226,12 +1226,11 @@ function toggleLoginEye() {
     input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
 }
 
-// ✅ [추가] 길드 목록 모달 함수
 async function showGuildListModal() {
     document.getElementById('loginModalBg').classList.remove('show');
     document.getElementById('registerModalBg').classList.remove('show');
     document.getElementById('guildListModalBg').classList.add('show');
-    await loadGuildList();
+    await loadGuildListPublic();
 }
 
 async function loadGuildList() {
