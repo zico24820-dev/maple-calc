@@ -177,7 +177,10 @@
             <!-- Enter 키로도 확인 가능 -->
             <input type="password" id="pwInput" placeholder="암호 입력" onkeydown="if(event.key==='Enter') confirmPw()">
             <!-- 눈 모양: 비밀번호 표시/숨김 토글 -->
-            <span class="pw-eye" id="pwEye" onclick="togglePwEye()">👁️</span>
+            <!-- 저장 암호 모달 -->
+            <span class="pw-eye" id="pwEye" onclick="togglePwEye()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
         </div>
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="confirmPw()">확인</button>
@@ -199,7 +202,10 @@
             <input type="password" id="loginPw" placeholder="비밀번호"
                 onkeydown="if(event.key==='Enter') doLogin()"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
-            <span class="pw-eye" onclick="toggleLoginEye()">👁️</span>
+            <!-- 로그인 모달 -->
+            <span class="pw-eye" onclick="toggleLoginEye()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
         </div>
         <p id="loginError" style="color:#ff5252; font-size:13px; margin-bottom:10px; display:none;">이메일 또는 비밀번호가 틀렸습니다.</p>
         <div class="pw-btns">
@@ -228,7 +234,10 @@
         <div class="pw-input-wrap">
             <input type="password" id="regPw" placeholder="비밀번호"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; margin-bottom:10px;">
-            <span class="pw-eye" onclick="toggleRegEye()">👁️</span>
+            <!-- 회원가입 모달 -->
+            <span class="pw-eye" onclick="toggleRegEye()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
         </div>
 
         <!-- 길드명 -->
@@ -302,6 +311,10 @@
     // 직업/O-X 선택 목록 상수
     const JOB_LIST = ['비숍','불독','썬콜','히어로','팔라딘','다크나이트','신궁','보우마스터','섀도어','나이트로드'];
     const OX_LIST  = ['O', 'X'];
+
+    // 회원가입 SVG 아이콘 상수 
+    const EYE_OPEN = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    const EYE_CLOSED = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
 
     // ===========================
@@ -793,11 +806,16 @@
 
     // 저장 버튼 클릭 → 입력값 수집 후 비밀번호 모달 표시
     function finalSaveToServer() {
-        gatherDataFromTable();
-        document.getElementById('pwInput').value = '';
-        document.getElementById('pwModalBg').classList.add('show');
-        setTimeout(() => document.getElementById('pwInput').focus(), 100);
+    if (!accessToken) {
+        alert('먼저 로그인이 필요합니다.');
+        document.getElementById('loginModalBg').classList.add('show');
+        return;
     }
+    gatherDataFromTable();
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwModalBg').classList.add('show');
+    setTimeout(() => document.getElementById('pwInput').focus(), 100);
+}
 
     function closePwModal() {
         document.getElementById('pwModalBg').classList.remove('show');
@@ -808,8 +826,8 @@
     function togglePwEye() {
         const input = document.getElementById('pwInput');
         const eye   = document.getElementById('pwEye');
-        if (input.type === 'password') { input.type = 'text'; eye.textContent = '🙈'; }
-        else { input.type = 'password'; eye.textContent = '👁️'; }
+        input.type = input.type === 'password' ? 'text' : 'password';
+        eye.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
     }
 
 async function confirmPw() {
@@ -1036,6 +1054,7 @@ function showLoginModal() {
 function toggleRegEye() {
     const input = document.getElementById('regPw');
     input.type = input.type === 'password' ? 'text' : 'password';
+    input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
 }
 
 // 서버 채널 드롭다운 동적 생성
@@ -1053,6 +1072,8 @@ function initServerSelect() {
 function toggleLoginEye() {
     const input = document.getElementById('loginPw');
     input.type = input.type === 'password' ? 'text' : 'password';
+    // 부모 span 찾기
+    input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
 }
 
 // ✅ [추가] 길드 목록 모달 함수
