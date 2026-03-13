@@ -1392,8 +1392,8 @@ async function saveAllMembers(memberList) {
                         'Content-Type': 'application/json',
                         'Prefer': 'resolution=merge-duplicates'
                     },
-                    body: JSON.stringify({
-                        member_id:      m.id,
+                   body: JSON.stringify({
+                        member_id:      Number(m.id),
                         recorded_power: String(parsePower(power)),
                         recorded_date:  date
                     })
