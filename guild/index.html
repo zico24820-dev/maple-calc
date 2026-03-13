@@ -44,7 +44,7 @@
         /* 비밀번호 모달: 이슈 #1 prompt() 평문 노출 → 커스텀 모달 교체 */
         .pw-modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; }
         .pw-modal-bg.show { display:flex; }
-        .pw-modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; width:320px; }
+        .pw-modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; width:320px; max-height:85vh; overflow-y:auto; }
         .pw-modal h3 { margin:0 0 20px; font-size:16px; color:#fff; }
         .pw-input-wrap { position:relative; margin-bottom:20px; }
         .pw-input-wrap input { width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; }
