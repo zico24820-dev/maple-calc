@@ -30,21 +30,17 @@
         td { padding: 8px; border-bottom: 1px solid var(--border); }
         .tbl-input { width: 100%; background: transparent; border: 1px solid transparent; color: #fff; text-align: center; padding: 5px; font-family: inherit; }
         .tbl-input:focus { border: 1px solid var(--point-sub); background: #111115; outline: none; }
-        /* 경고 행: 성장량 0인 활성 멤버 강조 */
         .row-warning { background-color: rgba(255, 82, 82, 0.25) !important; border-left: 6px solid #ff5252 !important; }
         .row-warning td { color: #ff8a8a !important; }
-        /* 공헌도 색상 (30미만=빨강 / 30~99=초록 / 100이상=노랑) */
         .contrib-low { color: #ff5252 !important; font-weight: 900 !important; }
         .contrib-ok { color: #4ade80 !important; font-weight: 700 !important; }
         .contrib-high { color: #ffb300 !important; font-weight: 700 !important; }
-        /* 공헌도 색상은 row-warning보다 우선 적용 */
         .row-warning td.contrib-low { color: #ff5252 !important; }
         .row-warning td.contrib-ok { color: #4ade80 !important; }
         .row-warning td.contrib-high { color: #ffb300 !important; }
-        /* 비밀번호 모달: 이슈 #1 prompt() 평문 노출 → 커스텀 모달 교체 */
         .pw-modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; }
         .pw-modal-bg.show { display:flex; }
-        .pw-modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; width:320px; max-height:85vh; overflow-y:auto; }
+        .pw-modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; width:320px; max-height:70vh; overflow-y:auto; }
         .pw-modal h3 { margin:0 0 20px; font-size:16px; color:#fff; }
         .pw-input-wrap { position:relative; margin-bottom:20px; }
         .pw-input-wrap input { width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; }
@@ -53,59 +49,78 @@
         .pw-btns { display:flex; gap:10px; }
         .pw-btn-ok { flex:1; background:linear-gradient(135deg,var(--point-color),var(--point-sub)); color:#fff; border:none; padding:12px; border-radius:8px; font-weight:900; cursor:pointer; font-size:14px; }
         .pw-btn-cancel { flex:1; background:#22222a; color:#fff; border:1px solid var(--border); padding:12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:14px; }
-        .guild-card { background:#111115; border:1px solid var(--border); border-radius:10px; padding:14px 16px; cursor:pointer; transition:border-color 0.2s; display:flex; justify-content:space-between; align-items:center; }
+        .guild-card { background:#111115; border:1px solid var(--border); border-radius:8px; padding:10px 14px; cursor:pointer; transition:border-color 0.2s; display:flex; justify-content:space-between; align-items:center; }
         .guild-card:hover { border-color:var(--point-color); }
-        .guild-card-name { font-size:15px; font-weight:700; color:#fff; word-break:break-all; white-space:normal; }
-        .guild-card-server { font-size:12px; color:var(--text-sub); margin-top:4px; word-break:break-all; white-space:normal; }
+        .guild-card-name { font-size:14px; font-weight:700; color:#fff; word-break:break-all; white-space:normal; }
+        .guild-card-server { font-size:11px; color:var(--text-sub); margin-top:2px; word-break:break-all; white-space:normal; }
         .guild-card-arrow { color:var(--point-color); font-size:18px; flex-shrink:0; }
-        /* 날짜 버튼: history에 기록된 날짜만 버튼으로 표시 */
         .date-btn { background:#1c1c22; border:1px solid var(--border); color:var(--text-sub); padding:6px 14px; border-radius:20px; cursor:pointer; font-size:13px; font-family:inherit; white-space:nowrap; transition:all 0.2s; }
         .date-btn:hover { border-color:var(--point-sub); color:var(--point-sub); }
         .date-btn.active { background:var(--point-color); border-color:var(--point-color); color:#fff; font-weight:900; }
         .date-btn.today { border-color:var(--point-sub); color:var(--point-sub); }
         .date-btn.nav-btn { background:#22222a; color:var(--point-sub); border-color:var(--point-sub); font-weight:900; }
         .date-btn.nav-btn:hover { background:var(--point-sub); color:#000; }
-
         #dateBtnWrap.expanded { max-height: 500px !important; }
         .date-btn.more-btn { background:#22222a; color:var(--text-sub); border-color:var(--border); font-size:12px; }
         .date-btn.more-btn:hover { border-color:var(--point-sub); color:var(--point-sub); }
         .portfolio-toggle { display: none; background: #111115; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 40px; cursor: pointer; }
+
+        /* ── 길드 목록 모달 탭 스타일 ── */
+        .guild-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .guild-tab { flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: #111115; color: var(--text-sub); font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.2s; font-family: inherit; }
+        .guild-tab.active { background: var(--point-color); border-color: var(--point-color); color: #fff; }
+        .guild-tab:hover:not(.active) { border-color: var(--point-sub); color: var(--point-sub); }
+
+        /* ── 모달 헤더 (타이틀 + X버튼) ── */
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { margin: 0; font-size: 16px; color: #fff; }
+        .modal-close { background: none; border: none; color: var(--text-sub); font-size: 22px; cursor: pointer; padding: 0; line-height: 1; transition: color 0.2s; }
+        .modal-close:hover { color: #ff5252; }
+
+        /* ── 내 길드 뱃지 ── */
+        .my-guild-badge { background: rgba(255,94,0,0.15); border: 1px solid var(--point-color); color: var(--point-color); font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+
         @media (max-width: 768px) { .summary-bar { grid-template-columns: 1fr; } .control-bar { flex-direction: column; gap: 10px; } }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- 헤더: 타이틀(5회 클릭 시 개발자 모드) + 방문자 배지 -->
-<div class="header-top">
-    <h1 class="main-title" onclick="handleTitleClick()">🍁 메이플 키우기 통합 길드 관리</h1>
-    <div style="display:flex; gap:8px; align-items:center;">
-        <a href="/" style="background:#22222a; color:#ffb300; padding:8px 16px; border-radius:8px; font-weight:900; text-decoration:none; font-size:13px; border:1px solid #2a2a32;">← 계산기</a>
-        <button onclick="showGuildListModal()" style="background:#22222a; color:#4ade80; padding:8px 16px; border-radius:8px; font-weight:900; font-size:13px; border:1px solid #2a2a32; cursor:pointer;">🏰 길드 목록</button>
-        <button id="logoutBtn" onclick="doLogout()" style="display:none; background:#22222a; color:#ff5252; padding:8px 16px; border-radius:8px; font-weight:900; font-size:13px; border:1px solid #2a2a32; cursor:pointer;">🚪 로그아웃</button>
+    <div class="header-top">
+        <h1 class="main-title" onclick="handleTitleClick()">🍁 메이플 키우기 통합 길드 관리</h1>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <a href="/" style="background:#22222a; color:#ffb300; padding:8px 16px; border-radius:8px; font-weight:900; text-decoration:none; font-size:13px; border:1px solid #2a2a32;">← 계산기</a>
+            <button onclick="showGuildListModal()" style="background:#22222a; color:#4ade80; padding:8px 16px; border-radius:8px; font-weight:900; font-size:13px; border:1px solid #2a2a32; cursor:pointer;">🏰 길드 목록</button>
+            <button id="logoutBtn" onclick="doLogout()" style="display:none; background:#22222a; color:#ff5252; padding:8px 16px; border-radius:8px; font-weight:900; font-size:13px; border:1px solid #2a2a32; cursor:pointer;">🚪 로그아웃</button>
+        </div>
+        <div class="traffic-badge">
+            <span>🔥 오늘 <b id="todayVisits">-</b></span> | <span>🌟 누적 <b id="totalVisits">-</b></span>
+        </div>
     </div>
-    <div class="traffic-badge">
-        <span>🔥 오늘 <b id="todayVisits">-</b></span> | <span>🌟 누적 <b id="totalVisits">-</b></span>
-    </div>
-</div>
 
-    <!-- 전투력 실시간 입력 미리보기 (입력 중일 때만 표시) -->
+    <!-- 선택된 길드명 표시 -->
+    <div id="currentGuildBanner" style="display:none; background:#1c1c22; border:1px solid var(--border); border-radius:12px; padding:10px 20px; margin-bottom:15px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:18px;">🏰</span>
+            <div>
+                <div id="currentGuildName" style="font-size:15px; font-weight:900; color:#fff;"></div>
+                <div id="currentGuildServer" style="font-size:12px; color:var(--text-sub); margin-top:2px;"></div>
+            </div>
+        </div>
+        <button onclick="showGuildListModal()" style="background:#22222a; color:var(--point-sub); border:1px solid var(--border); padding:6px 12px; border-radius:8px; font-size:12px; font-weight:900; cursor:pointer; font-family:inherit;">변경</button>
+    </div>
     <div id="liveGuide" style="color:var(--point-sub); font-weight:900; text-align:center; height:20px; margin-bottom:10px; font-size:15px;"></div>
 
-    <!-- 요약 카드 4개: 총전투력 / 성장량 / 인원 / 체크필요 -->
     <div class="summary-bar">
         <div class="stat-card"><h3>길드 총 전투력</h3><p id="totalPower" style="font-size:22px; font-weight:900; color:var(--point-sub);">0</p></div>
         <div class="stat-card"><h3>주간 총 성장량</h3><p id="totalGrowth" style="font-size:22px; font-weight:900;">0</p></div>
         <div class="stat-card"><h3>현재 인원</h3><p id="memberCount" style="font-size:22px; font-weight:900;">0 / 50</p></div>
-        <!-- 성장량 0인 활성 멤버 수 경고 카드 -->
         <div class="stat-card" style="border-color:#d32f2f;"><h3 style="color:#ff8a8a;">체크 필요(0)</h3><p id="alertCount" style="font-size:22px; font-weight:900; color:#ff5252;">0명</p></div>
     </div>
 
-    <!-- 차트: 지정일 기준 7일치 전투력 추이 -->
     <div class="chart-wrapper">
         <div class="chart-header">
             <h3>📈 길드 주간 성장 추이</h3>
-            <!-- 개인/전체 전환 셀렉터 (render 시 동적으로 멤버 옵션 추가) -->
             <select id="chartSelector" class="ui-select" onchange="drawChart()">
                 <option value="ALL">🌟 길드 총 전투력</option>
             </select>
@@ -115,26 +130,19 @@
         </div>
     </div>
 
-    <!-- 컨트롤 바: 1줄(액션버튼) + 2줄(날짜버튼) 세로 배치 -->
     <div class="control-bar" style="flex-direction:column; gap:12px;">
-        <!-- 상단: 멤버 추가 + 저장 버튼 -->
         <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
             <button class="btn-add" onclick="addNewMemberRow()">➕ 새 길드원 추가</button>
             <button class="btn-final" onclick="finalSaveToServer()">🔒 저장하기</button>
         </div>
-        <!-- 하단: 날짜 버튼 (JS의 renderDateButtons()가 동적으로 채움) -->
         <div style="display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap;">
             <span style="font-size:13px; color:var(--text-sub); font-weight:bold; white-space:nowrap;">기록/조회 지정일:</span>
             <div id="dateBtnWrap" style="display:flex; gap:6px; flex-wrap:wrap; max-height:80px; overflow:hidden; transition:max-height 0.3s ease;"></div>
         </div>
     </div>
 
-    <!-- 숨겨진 date input
-         화면에 안 보이지만 내부 날짜값 참조용으로 사용
-         버튼 클릭 시 JS가 이 값을 변경 → handleDateChange() 연쇄 실행 -->
     <input type="date" id="recordDate" style="display:none;" onchange="handleDateChange()">
 
-    <!-- 멤버 테이블: th 클릭 시 해당 컬럼 기준 정렬 -->
     <div class="table-wrapper">
         <table>
             <thead>
@@ -157,22 +165,21 @@
         </table>
     </div>
 
-    <!-- 개발자 노트: 타이틀 5회 클릭 시 활성화 -->
     <details class="portfolio-toggle">
         <summary style="color:var(--point-sub); font-weight:900; outline:none; list-style:none;">📂 [클릭] 개발자 노트 : 성과 지표</summary>
         <div style="padding:20px; color:#aaa;">AS-IS (GAS): 3,500ms | TO-BE (Supabase): 120ms</div>
     </details>
 </div>
 
-<!-- 비밀번호 모달: 이슈 #1 prompt() 대체 / 이슈 #7 커스텀 모달 -->
+<!-- 비밀번호 모달 -->
 <div class="pw-modal-bg" id="pwModalBg">
     <div class="pw-modal">
-        <h3>🔒 저장 암호를 입력하세요</h3>
+        <div class="modal-header">
+            <h3>🔒 저장 암호를 입력하세요</h3>
+            <button class="modal-close" onclick="closePwModal()">✕</button>
+        </div>
         <div class="pw-input-wrap">
-            <!-- Enter 키로도 확인 가능 -->
             <input type="password" id="pwInput" placeholder="암호 입력" onkeydown="if(event.key==='Enter') confirmPw()">
-            <!-- 눈 모양: 비밀번호 표시/숨김 토글 -->
-            <!-- 저장 암호 모달 -->
             <span class="pw-eye" id="pwEye" onclick="togglePwEye()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </span>
@@ -184,85 +191,83 @@
     </div>
 </div>
 
-<!-- 로그인 모달 → 비밀번호 모달 완전히 닫힌 후 여기부터 시작 -->
+<!-- 로그인 모달 -->
 <div class="pw-modal-bg" id="loginModalBg">
     <div class="pw-modal">
-        <h3>🍁 메이플 키우기 길드 관리</h3>
+        <div class="modal-header">
+            <h3>🍁 메이플 키우기 길드 관리</h3>
+            <button class="modal-close" onclick="showGuildListModal()">✕</button>
+        </div>
         <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">길드장 계정으로 로그인하세요</p>
         <div class="pw-input-wrap">
-            <input type="email" id="loginEmail" placeholder="이메일" 
+            <input type="email" id="loginEmail" placeholder="이메일"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; margin-bottom:10px;">
         </div>
         <div class="pw-input-wrap">
             <input type="password" id="loginPw" placeholder="비밀번호"
                 onkeydown="if(event.key==='Enter') doLogin()"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
-            <!-- 로그인 모달 -->
             <span class="pw-eye" onclick="toggleLoginEye()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
         </div>
         <p id="loginError" style="color:#ff5252; font-size:13px; margin-bottom:10px; display:none;">이메일 또는 비밀번호가 틀렸습니다.</p>
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="doLogin()">로그인</button>
         </div>
-         <p style="text-align:center; margin-top:10px; font-size:13px; color:var(--text-sub);">
+        <p style="text-align:center; margin-top:10px; font-size:13px; color:var(--text-sub);">
             <span onclick="showResetModal()" style="color:var(--point-sub); cursor:pointer;">비밀번호 찾기</span>
         </p>
         <p style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-sub);">
-            길드가 없으신가요? 
+            길드가 없으신가요?
             <span onclick="showRegisterModal()" style="color:var(--point-sub); cursor:pointer; font-weight:700;">길드 등록하기</span>
         </p>
-    </div>       
-</div>           
+    </div>
+</div>
 
 <!-- 회원가입 모달 -->
 <div class="pw-modal-bg" id="registerModalBg">
     <div class="pw-modal" style="width:360px;">
-        <h3>🍁 길드 등록</h3>
+        <div class="modal-header">
+            <h3>🍁 길드 등록</h3>
+            <button class="modal-close" onclick="showGuildListModal()">✕</button>
+        </div>
         <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">길드장 계정을 만들어주세요</p>
-
-        <!-- 이메일 -->
         <div class="pw-input-wrap">
             <input type="email" id="regEmail" placeholder="이메일"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; margin-bottom:10px;">
         </div>
-
-        <!-- 비밀번호 -->
         <div class="pw-input-wrap">
             <input type="password" id="regPw" placeholder="비밀번호"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 44px 12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; margin-bottom:10px;">
-            <!-- 회원가입 모달 -->
             <span class="pw-eye" onclick="toggleRegEye()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </span>
         </div>
-
-        <!-- 길드명 -->
         <div class="pw-input-wrap">
             <input type="text" id="regGuildName" placeholder="길드명"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box; margin-bottom:10px;">
         </div>
-
-        <!-- 서버명 -->
         <div class="pw-input-wrap">
             <input type="text" id="regServerName" placeholder="서버명 (예: 스카니아-10)"
                 onkeydown="if(event.key==='Enter') doRegister()"
                 style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:12px 14px; border-radius:8px; font-size:15px; box-sizing:border-box;">
         </div>
-
         <p id="registerError" style="color:#ff5252; font-size:13px; margin-bottom:10px; display:none;"></p>
-
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="doRegister()">가입하기</button>
             <button class="pw-btn-cancel" onclick="showLoginModal()">로그인으로</button>
         </div>
     </div>
 </div>
+
 <!-- 비밀번호 찾기 모달 -->
 <div class="pw-modal-bg" id="resetModalBg">
     <div class="pw-modal">
-        <h3>🔑 비밀번호 찾기</h3>
+        <div class="modal-header">
+            <h3>🔑 비밀번호 찾기</h3>
+            <button class="modal-close" onclick="showGuildListModal()">✕</button>
+        </div>
         <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">가입한 이메일로 재설정 링크를 보내드려요</p>
         <div class="pw-input-wrap">
             <input type="email" id="resetEmail" placeholder="이메일"
@@ -276,10 +281,13 @@
         </div>
     </div>
 </div>
+
 <!-- 새 비밀번호 설정 모달 -->
 <div class="pw-modal-bg" id="newPwModalBg">
     <div class="pw-modal">
-        <h3>🔑 새 비밀번호 설정</h3>
+        <div class="modal-header">
+            <h3>🔑 새 비밀번호 설정</h3>
+        </div>
         <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">새로운 비밀번호를 입력해주세요</p>
         <div class="pw-input-wrap">
             <input type="password" id="newPwInput" placeholder="새 비밀번호"
@@ -296,22 +304,55 @@
     </div>
 </div>
 
-<!-- 길드 목록 모달 -->
+<!-- ══════════════════════════════════════════
+     길드 목록 모달 (개선)
+     - 내 길드 / 전체 길드 탭 분리
+     - X 닫기 버튼
+     - 내 길드에 MY 뱃지
+══════════════════════════════════════════ -->
 <div class="pw-modal-bg" id="guildListModalBg">
-    <div class="pw-modal" style="width:380px;">
-        <h3>🍁 내 길드 목록</h3>
-        <p style="color:var(--text-sub); font-size:13px; margin-bottom:20px;">관리할 길드를 선택하세요</p>
+    <div class="pw-modal" style="width:400px;">
 
-        <!-- 길드 목록 -->
-        <div id="guildListContainer" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
-            <!-- JS로 동적 생성 -->
+        <!-- 헤더 + X버튼 -->
+        <div class="modal-header">
+            <h3>🍁 길드 목록</h3>
+            <button class="modal-close" onclick="closeGuildListModal()">✕</button>
         </div>
 
-        <!-- 길드 없을 때 -->
-        <div id="guildListEmpty" style="display:none; text-align:center; padding:20px 0; color:var(--text-sub); font-size:14px;">
-            아직 길드가 없어요.<br>새 길드를 만들어보세요!
+        <!-- 탭: 내 길드 / 전체 길드 -->
+        <div class="guild-tabs">
+            <button class="guild-tab active" id="tabMy" onclick="switchGuildTab('my')">⭐ 내 길드</button>
+            <button class="guild-tab" id="tabAll" onclick="switchGuildTab('all')">🌐 전체 길드</button>
         </div>
 
+        <!-- 검색창 -->
+        <div style="position:relative; margin-bottom:12px;">
+            <input type="text" id="guildSearchInput" placeholder="🔍 길드명 검색..."
+                oninput="filterGuilds()"
+                style="width:100%; background:#111115; border:1px solid var(--border); color:#fff; padding:10px 14px; border-radius:8px; font-size:14px; box-sizing:border-box; font-family:inherit;">
+        </div>
+
+        <!-- 내 길드 목록 -->
+        <div id="myGuildSection">
+            <div id="myGuildContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px; max-height:300px; overflow-y:auto;"></div>
+            <div id="myGuildEmpty" style="display:none; text-align:center; padding:20px 0; color:var(--text-sub); font-size:14px;">
+                아직 내 길드가 없어요.<br>새 길드를 만들어보세요!
+            </div>
+            <div id="myGuildLogin" style="display:none; text-align:center; padding:16px 0; color:var(--text-sub); font-size:14px;">
+                <p style="margin-bottom:12px;">로그인하면 내 길드를 볼 수 있어요</p>
+                <button class="pw-btn-ok" onclick="showLoginModal()" style="width:100%;">로그인</button>
+            </div>
+        </div>
+
+        <!-- 전체 길드 목록 -->
+        <div id="allGuildSection" style="display:none;">
+            <div id="allGuildContainer" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px; max-height:300px; overflow-y:auto;"></div>
+            <div id="allGuildEmpty" style="display:none; text-align:center; padding:20px 0; color:var(--text-sub); font-size:14px;">
+                등록된 길드가 없어요.
+            </div>
+        </div>
+
+        <!-- 새 길드 만들기 버튼 -->
         <div class="pw-btns">
             <button class="pw-btn-ok" onclick="showRegisterModal()">+ 새 길드 만들기</button>
         </div>
@@ -319,45 +360,28 @@
 </div>
 
 <script>
-    // ===========================
-    // 전역 상태 변수
-    // 이슈 #8(보류): AppState 캡슐화 예정 — 현재는 전역 유지
-    // ===========================
-    let members     = [];                               // 길드원 데이터 배열
-    let currentSort = { key: 'power', order: 'desc' }; // 현재 정렬 기준
-    let myChart     = null;                             // Chart.js 인스턴스 (이슈 #5)
-    let titleClickCount = 0;                            // 개발자 모드 활성화 카운터
-    let todayStr    = "";                               // 오늘 날짜 (YYYY-MM-DD)
-    let isDateExpanded = false;                         // 날짜 버튼 더보기/접기 상태 (true=펼침 / false=접힘)
-    let pendingGuildId = null; // 로그인 전 선택한 길드 ID 임시 저장
+    let members     = [];
+    let currentSort = { key: 'power', order: 'desc' };
+    let myChart     = null;
+    let titleClickCount = 0;
+    let todayStr    = "";
+    let isDateExpanded = false;
+    let pendingGuildId = null;
+    let currentGuildTab = 'my'; // 현재 탭 상태
 
-    // ✅ [추가] Supabase 연동 설정 — GAS 환경 제거 후 직접 API 호출로 전환
-    const SUPABASE_URL = 'https://pnjlhcoscylijvuzjuqc.supabase.co'; // Supabase 프로젝트 URL
-    const SUPABASE_KEY = 'sb_publishable_dOfrc4rCcP5TKLMUZkaGBQ_NPZlwWyU'; // Supabase anon public key
-    let accessToken   = null;  // 로그인 성공 시 발급되는 JWT 토큰 - API 호출 시 Authorization 헤더에 사용
-    let currentUserId  = null;  // 로그인한 사용자 ID ~ 내 길드 조회 시 auth_user_id 필터에 사용 
-    let currentUserEmail = null; // ✅ [추가] 로그인한 이메일 저장
-    // 길드 전역변수 
+    const SUPABASE_URL = 'https://pnjlhcoscylijvuzjuqc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_dOfrc4rCcP5TKLMUZkaGBQ_NPZlwWyU';
+    let accessToken   = null;
+    let currentUserId  = null;
+    let currentUserEmail = null;
     let currentGuildId = null;
 
-
-    // 이슈 #4: BigInt 단위 상수화 → 나누기/곱하기 단위 불일치 버그 방지
-    const CHART_UNIT = 100000000n; // 1억 단위
-
-    // 직업/O-X 선택 목록 상수
+    const CHART_UNIT = 100000000n;
     const JOB_LIST = ['비숍','불독','썬콜','히어로','팔라딘','다크나이트','신궁','보우마스터','섀도어','나이트로드'];
     const OX_LIST  = ['O', 'X'];
-
-    // 회원가입 SVG 아이콘 상수 
     const EYE_OPEN = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
     const EYE_CLOSED = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
-
-    // ===========================
-    // 초기화
-    // ===========================
-
-    // 타이틀 5회 클릭 시 개발자 노트 활성화 (3초 내 5회)
     function handleTitleClick() {
         titleClickCount++;
         setTimeout(() => { titleClickCount = 0; }, 3000);
@@ -369,226 +393,285 @@
     }
 
     window.onload = async function () {
-    const offset = new Date().getTimezoneOffset() * 60000;
-    todayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
+        const offset = new Date().getTimezoneOffset() * 60000;
+        todayStr = new Date(Date.now() - offset).toISOString().split('T')[0];
 
-    accessToken      = localStorage.getItem('accessToken');
-    currentUserId    = localStorage.getItem('currentUserId');
-    currentUserEmail = localStorage.getItem('currentUserEmail');
+        accessToken      = localStorage.getItem('accessToken');
+        currentUserId    = localStorage.getItem('currentUserId');
+        currentUserEmail = localStorage.getItem('currentUserEmail');
 
-    document.getElementById('recordDate').value = todayStr;
-    document.getElementById('recordDate').setAttribute('max', todayStr);
+        document.getElementById('recordDate').value = todayStr;
+        document.getElementById('recordDate').setAttribute('max', todayStr);
 
-    // 로그인 상태면 로그아웃 버튼 표시
-    if (accessToken) {
-        document.getElementById('logoutBtn').style.display = 'block';
+        if (accessToken) {
+            document.getElementById('logoutBtn').style.display = 'block';
+        }
+
+        const hash = window.location.hash || '';
+        if (hash.includes('type=recovery')) {
+            const params = new URLSearchParams(hash.substring(1));
+            accessToken = params.get('access_token');
+            document.getElementById('guildListModalBg').classList.remove('show');
+            document.getElementById('newPwModalBg').classList.add('show');
+            setTimeout(() => document.getElementById('newPwInput').focus(), 100);
+        } else {
+            document.getElementById('guildListModalBg').classList.add('show');
+            await loadGuildListPublic();
+        }
+
+        logVisit();
+    };
+
+    // ── 길드 목록 모달 닫기 (X버튼) ──
+    // 길드가 선택된 상태라면 닫기 가능, 아니면 닫기 안 됨
+    function closeGuildListModal() {
+        if (currentGuildId) {
+            document.getElementById('guildListModalBg').classList.remove('show');
+        } else {
+            // 길드 미선택 상태에서는 안내 메시지
+            alert('관리할 길드를 선택해주세요.');
+        }
     }
 
-    // 비밀번호 재설정 링크로 들어온 경우 감지
-    const hash = window.location.hash || '';
-    if (hash.includes('type=recovery')) {
-        const params = new URLSearchParams(hash.substring(1));
-        accessToken = params.get('access_token');
-        document.getElementById('guildListModalBg').classList.remove('show');
-        document.getElementById('newPwModalBg').classList.add('show');
-        setTimeout(() => document.getElementById('newPwInput').focus(), 100);
-    } else {
+
+    // ── 길드 검색 필터 ──
+    function filterGuilds() {
+        const keyword = document.getElementById('guildSearchInput').value.trim().toLowerCase();
+        const tab = currentGuildTab;
+        const container = tab === 'my'
+            ? document.getElementById('myGuildContainer')
+            : document.getElementById('allGuildContainer');
+
+        const cards = container.querySelectorAll('.guild-card');
+        let visibleCount = 0;
+        cards.forEach(card => {
+            const name   = card.querySelector('.guild-card-name').textContent.toLowerCase();
+            const server = card.querySelector('.guild-card-server').textContent.toLowerCase();
+            if (!keyword || name.includes(keyword) || server.includes(keyword)) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // 검색 결과 없음 처리
+        const emptyId = tab === 'my' ? 'myGuildEmpty' : 'allGuildEmpty';
+        const emptyEl = document.getElementById(emptyId);
+        if (emptyEl) emptyEl.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // ── 탭 전환 ──
+    function switchGuildTab(tab) {
+        currentGuildTab = tab;
+        document.getElementById('tabMy').classList.toggle('active', tab === 'my');
+        document.getElementById('tabAll').classList.toggle('active', tab === 'all');
+        document.getElementById('myGuildSection').style.display  = tab === 'my'  ? 'block' : 'none';
+        document.getElementById('allGuildSection').style.display = tab === 'all' ? 'block' : 'none';
+        // 탭 전환 시 검색창 초기화 + 필터 재적용
+        const searchInput = document.getElementById('guildSearchInput');
+        if (searchInput) { searchInput.value = ''; filterGuilds(); }
+    }
+
+    // ── 길드 목록 불러오기 (공개 + 내 길드 분리) ──
+    async function loadGuildListPublic() {
+        // 전체 길드 불러오기
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/guilds?select=*`, {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        const guilds = await res.json();
+
+        // 전체 길드 섹션
+        const allContainer = document.getElementById('allGuildContainer');
+        const allEmpty     = document.getElementById('allGuildEmpty');
+        allContainer.innerHTML = '';
+
+        if (!guilds.length) {
+            allEmpty.style.display = 'block';
+        } else {
+            allEmpty.style.display = 'none';
+            guilds.forEach(g => {
+                const isMine = currentUserId && g.auth_user_id === currentUserId;
+                const card = document.createElement('div');
+                card.className = 'guild-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="guild-card-name">
+                            ${escapeHtml(g.name)}
+                            ${isMine ? '<span class="my-guild-badge">MY</span>' : ''}
+                        </div>
+                        <div class="guild-card-server">${escapeHtml(g.server_name)}</div>
+                    </div>
+                    <div class="guild-card-arrow">▶</div>
+                `;
+                card.onclick = () => selectGuild(g.id);
+                allContainer.appendChild(card);
+            });
+        }
+
+        // 내 길드 섹션
+        const myContainer = document.getElementById('myGuildContainer');
+        const myEmpty     = document.getElementById('myGuildEmpty');
+        const myLogin     = document.getElementById('myGuildLogin');
+        myContainer.innerHTML = '';
+
+        if (!accessToken || !currentUserId) {
+            // 로그인 안 된 경우
+            myEmpty.style.display  = 'none';
+            myLogin.style.display  = 'block';
+            myContainer.innerHTML  = '';
+        } else {
+            myLogin.style.display = 'none';
+            const myGuilds = guilds.filter(g => g.auth_user_id === currentUserId);
+            if (!myGuilds.length) {
+                myEmpty.style.display = 'block';
+            } else {
+                myEmpty.style.display = 'none';
+                myGuilds.forEach(g => {
+                    const card = document.createElement('div');
+                    card.className = 'guild-card';
+                    card.style.borderColor = 'var(--point-color)';
+                    card.innerHTML = `
+                        <div>
+                            <div class="guild-card-name">
+                                ${escapeHtml(g.name)}
+                                <span class="my-guild-badge">MY</span>
+                            </div>
+                            <div class="guild-card-server">${escapeHtml(g.server_name)}</div>
+                        </div>
+                        <div class="guild-card-arrow">▶</div>
+                    `;
+                    card.onclick = () => selectGuild(g.id, g.name, g.server_name);
+                    myContainer.appendChild(card);
+                });
+            }
+        }
+    }
+
+    async function showGuildListModal() {
+        document.getElementById('loginModalBg').classList.remove('show');
+        document.getElementById('registerModalBg').classList.remove('show');
+        document.getElementById('resetModalBg').classList.remove('show');
         document.getElementById('guildListModalBg').classList.add('show');
         await loadGuildListPublic();
     }
 
-    logVisit();
-};
+    async function selectGuild(guildId, guildName, serverName) {
+        document.getElementById('guildListModalBg').classList.remove('show');
 
-    // ✅ [변경] GAS logVisit() → Supabase stats 테이블로 교체
-    // Before: google.script.run.logVisit() → 구글 시트 stats 탭에 기록
-    // After:  Supabase stats 테이블에 직접 upsert
+        // 배너 업데이트
+        if (guildName) {
+            document.getElementById('currentGuildBanner').style.display = 'flex';
+            document.getElementById('currentGuildName').textContent = guildName;
+            document.getElementById('currentGuildServer').textContent = serverName || '';
+        }
+
+        if (!accessToken) {
+            pendingGuildId = guildId;
+            document.getElementById('loginModalBg').classList.add('show');
+            setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+        } else {
+            await refreshData(guildId);
+        }
+    }
+
     async function logVisit() {
         try {
             const today = todayStr;
-
             const res = await fetch(`${SUPABASE_URL}/rest/v1/stats?date=eq.${today}&select=*`, {
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': `Bearer ${SUPABASE_KEY}`
-                }
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
             });
             const rows = await res.json();
-
             if (rows.length > 0) {
                 const row = rows[0];
                 await fetch(`${SUPABASE_URL}/rest/v1/stats?id=eq.${row.id}`, {
                     method: 'PATCH',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        daily_visits: row.daily_visits + 1,
-                        total_visits: row.total_visits + 1
-                    })
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ daily_visits: row.daily_visits + 1, total_visits: row.total_visits + 1 })
                 });
                 document.getElementById('todayVisits').innerText = (row.daily_visits + 1) + "명";
-                document.getElementById('totalVisits').innerText = (row.total_visits + 1) + "명";
+                document.getElementById('totalVisits').innerText  = (row.total_visits + 1) + "명";
             } else {
                 const allRes = await fetch(`${SUPABASE_URL}/rest/v1/stats?select=total_visits&order=id.desc&limit=1`, {
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`
-                    }
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
                 });
                 const allRows = await allRes.json();
                 const prevTotal = allRows.length > 0 ? allRows[0].total_visits : 0;
-
                 await fetch(`${SUPABASE_URL}/rest/v1/stats`, {
                     method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        date: today,
-                        daily_visits: 1,
-                        total_visits: prevTotal + 1
-                    })
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date: today, daily_visits: 1, total_visits: prevTotal + 1 })
                 });
                 document.getElementById('todayVisits').innerText = "1명";
-                document.getElementById('totalVisits').innerText = (prevTotal + 1) + "명";
+                document.getElementById('totalVisits').innerText  = (prevTotal + 1) + "명";
             }
         } catch(e) {
-            console.error('방문자 카운트 실패:', e);
             document.getElementById('todayVisits').innerText = "-";
-            document.getElementById('totalVisits').innerText = "-";
+            document.getElementById('totalVisits').innerText  = "-";
         }
     }
 
-    // ===========================
-    // 데이터 로드
-    // ✅ [변경] GAS google.script.run → Supabase async/await로 전환
-    // Before: GAS 콜백 방식 (withSuccessHandler / withFailureHandler)
-    // After:  async/await 방식 (try/catch로 에러 처리)
-    // 이유: Supabase는 fetch() 기반 비동기 API라서 async/await 필수
-    //       GAS는 구글 서버가 중간에서 실행 → Supabase는 브라우저에서 직접 DB 호출
-    // ===========================
     async function refreshData(guildId) {
-    currentGuildId = guildId;
-    try {
-        members = await getMembers(guildId);
-        render();
-    } catch(err) {
-        console.error('데이터 로드 실패:', err);
-        alert('데이터를 불러오지 못했습니다. 새로고침 해주세요.');
+        currentGuildId = guildId;
+        try {
+            members = await getMembers(guildId);
+            render();
+        } catch(err) {
+            alert('데이터를 불러오지 못했습니다. 새로고침 해주세요.');
+        }
     }
-}
 
-    // ===========================
-    // 날짜 버튼 렌더링
-    // 기록된 날짜만 버튼으로 표시 → 클릭만으로 날짜 이동
-    // ===========================
-
-    // 모든 멤버 history에서 날짜 수집 (오늘 항상 포함, 미래 날짜 제외)
     function getRecordedDates() {
         let dateSet = new Set();
         dateSet.add(todayStr);
         members.forEach(m => {
-            if (m.history) Object.keys(m.history).forEach(d => {
-                if (d <= todayStr) dateSet.add(d);
-            });
+            if (m.history) Object.keys(m.history).forEach(d => { if (d <= todayStr) dateSet.add(d); });
         });
-        return Array.from(dateSet).sort(); // 오름차순
+        return Array.from(dateSet).sort();
     }
 
-    // 이전/다음 버튼 + 날짜 버튼 렌더링
-    // 첫/마지막 날짜에서 이전/다음 버튼 비활성화
     function renderDateButtons() {
         const wrap = document.getElementById('dateBtnWrap');
         if (!wrap) return;
-
         const dates       = getRecordedDates();
         const currentDate = document.getElementById('recordDate').value;
         const currentIdx  = dates.indexOf(currentDate);
-        const hasPrev = currentIdx > 0;
         const hasNext = currentIdx < dates.length - 1;
-
-        // 최신순으로 뒤집기
         const reverseDates = dates.slice().reverse();
-
-        // 접힌 상태 : 최신 3개만 표시
         const visibleDates = isDateExpanded ? reverseDates : reverseDates.slice(0, 3);
-
-        let html = '';
-        // 이전 버튼
-        html += `<button class="date-btn nav-btn" onclick="moveDate(1)" ${!hasNext ? 'disabled style="opacity:0.3;cursor:default;"' : ''}>다음 ▶</button>`;
-
+        let html = `<button class="date-btn nav-btn" onclick="moveDate(1)" ${!hasNext ? 'disabled style="opacity:0.3;cursor:default;"' : ''}>다음 ▶</button>`;
         if (dates.length > 3) {
             html += `<button class="date-btn more-btn" onclick="toggleDateWrap()">${isDateExpanded ? '▲ 접기' : '▼ 더보기'}</button>`;
         }
-
-
-        // 날짜 버튼 (최신순)
         visibleDates.forEach(d => {
             const isActive = d === currentDate;
             const isToday  = d === todayStr;
             const label    = isToday ? `${d.slice(5)} 오늘` : d.slice(5);
             html += `<button class="date-btn ${isActive ? 'active' : ''} ${isToday && !isActive ? 'today' : ''}" onclick="selectDateBtn('${d}')">${label}</button>`;
         });
-
         wrap.innerHTML = html;
-        // max-height 제거하고 display로만 제어 
         wrap.style.maxHeight = 'none';
         wrap.style.overflow = 'visible';
     }
 
-    function toggleDateWrap() {
-    isDateExpanded = !isDateExpanded;
-    renderDateButtons();
-    }
-
-    // 날짜 버튼 클릭: 숨겨진 input 값 변경 → 기존 로직 재사용
-    function selectDateBtn(dateStr) {
-        document.getElementById('recordDate').value = dateStr;
-        gatherDataFromTable();
-        render();
-    }
-
-    // 이전/다음 버튼: 기록된 날짜 배열 기준으로 인덱스 이동
-    // direction: -1(이전) / 1(다음)
+    function toggleDateWrap() { isDateExpanded = !isDateExpanded; renderDateButtons(); }
+    function selectDateBtn(dateStr) { document.getElementById('recordDate').value = dateStr; gatherDataFromTable(); render(); }
     function moveDate(direction) {
-        const dates       = getRecordedDates();
+        const dates = getRecordedDates();
         const currentDate = document.getElementById('recordDate').value;
-        const currentIdx  = dates.indexOf(currentDate);
-        const nextIdx     = currentIdx + direction;
-        if (nextIdx >= 0 && nextIdx < dates.length) {
-            selectDateBtn(dates[nextIdx]);
-        }
+        const nextIdx = dates.indexOf(currentDate) + direction;
+        if (nextIdx >= 0 && nextIdx < dates.length) selectDateBtn(dates[nextIdx]);
     }
-
-
-    // ===========================
-    // 입력 수집
-    // ===========================
-
-    // 미래 날짜 선택 방어: 오늘보다 크면 강제로 오늘로 되돌림
     function handleDateChange() {
         const selected = document.getElementById('recordDate').value;
-        if (selected > todayStr) {
-            document.getElementById('recordDate').value = todayStr;
-        }
-        gatherDataFromTable();
-        render();
+        if (selected > todayStr) document.getElementById('recordDate').value = todayStr;
+        gatherDataFromTable(); render();
     }
-
-    // 전투력 입력 중 실시간 미리보기 (한글 단위 즉시 변환)
     function showLiveGuide(val) {
         const guide = document.getElementById('liveGuide');
         if (!val) { guide.innerText = ''; return; }
         guide.innerText = "👀 실시간 입력 확인 : " + formatPower(parsePower(val));
     }
-
-    // 테이블 DOM → members 배열 동기화
-    // 오늘: m.power 업데이트 / 과거 지정일: m.history[날짜] 업데이트
     function gatherDataFromTable() {
         const rows     = document.querySelectorAll('#tableBody tr');
         const viewDate = document.getElementById('recordDate').value;
@@ -612,46 +695,30 @@
         });
     }
 
-
-    // ===========================
-    // 렌더링 (단일 진입점)
-    // 상태 변경 후 항상 render() 호출
-    // ===========================
     function render() {
         try {
             const tbody = document.getElementById('tableBody');
             if (!tbody) return;
-
             let totalP = 0n, totalG = 0n, alertCount = 0;
             const viewDate = document.getElementById('recordDate').value;
             const isPast   = viewDate !== todayStr;
-
-            // 1단계: displayPower / growth 계산
             members.forEach(m => {
                 try {
                     const h = m.history || {};
                     m.displayPower = isPast ? (h[viewDate] || "0") : m.power;
-
-                    // 직전 기록일과 비교해 성장량 계산
                     const pastDates = Object.keys(h).sort().filter(d => d < viewDate);
                     const prevPower = pastDates.length > 0 ? h[pastDates[pastDates.length - 1]] : m.displayPower;
                     m.growth = (parsePower(m.displayPower) - parsePower(prevPower)).toString();
-
-                    // 이슈 #2: 데이터 있는 멤버 중 성장량 0인 경우만 경고 (신규 멤버 제외)
                     const hasData = m.displayPower !== "0";
                     if (hasData && BigInt(m.growth) === 0n) alertCount++;
                 } catch (e) { m.displayPower = "0"; m.growth = "0"; }
             });
-
-            // 2단계: 정렬
             members.sort((a, b) => {
                 let va = currentSort.key === 'power' ? a.displayPower : a[currentSort.key];
                 let vb = currentSort.key === 'power' ? b.displayPower : b[currentSort.key];
                 if (['power', 'growth', 'contribution', 'inactive'].includes(currentSort.key)) {
-                    let nVa = currentSort.key === 'contribution' ? Number(va || 0) :
-                              currentSort.key === 'inactive'     ? Number(va || 0) : parsePower(va);
-                    let nVb = currentSort.key === 'contribution' ? Number(vb || 0) :
-                              currentSort.key === 'inactive'     ? Number(vb || 0) : parsePower(vb);
+                    let nVa = currentSort.key === 'contribution' ? Number(va || 0) : currentSort.key === 'inactive' ? Number(va || 0) : parsePower(va);
+                    let nVb = currentSort.key === 'contribution' ? Number(vb || 0) : currentSort.key === 'inactive' ? Number(vb || 0) : parsePower(vb);
                     if (currentSort.order === 'desc') return nVa < nVb ? 1 : (nVa > nVb ? -1 : 0);
                     return nVa > nVb ? 1 : (nVa < nVb ? -1 : 0);
                 } else {
@@ -659,79 +726,48 @@
                     return currentSort.order === 'desc' ? vb.localeCompare(va) : va.localeCompare(vb);
                 }
             });
-
-            // 3단계: HTML 문자열 누적 후 1회 DOM 삽입
-            // 이슈 #3: innerHTML += 반복(50회) → 문자열 누적 후 1회 삽입으로 최적화
             let html = '';
             members.forEach((m, i) => {
                 totalP += parsePower(m.displayPower);
                 let gVal = BigInt(m.growth);
                 totalG += gVal;
                 const isWarning = m.displayPower !== "0" && gVal === 0n;
-
-                // 이슈 #6: XSS 방지 — 사용자 입력값 모두 escapeHtml() 처리
-                html += `
-                    <tr data-id="${escapeHtml(m.id)}" class="${isWarning ? 'row-warning' : ''}">
-                        <td style="color:var(--text-sub); font-weight:bold;">${i + 1}</td>
-                        <td><input type="text" class="tbl-input i-name" value="${escapeHtml(m.name)}"></td>
-                        <td><select class="tbl-input i-job">${JOB_LIST.map(j => `<option value="${j}" ${j == m.job ? 'selected' : ''}>${j}</option>`).join('')}</select></td>
-                        <td><input type="text" class="tbl-input i-power" value="${formatPower(m.displayPower)}" oninput="showLiveGuide(this.value)" onblur="document.getElementById('liveGuide').innerText=''"></td>
-                        <td style="font-weight:bold; font-size:12px; color:${gVal > 0n ? '#ff6b6b' : (gVal < 0n ? '#6b9cff' : '#8a8a93')}">
-                            ${gVal === 0n ? '-' : (gVal > 0n ? '▲ ' : '▼ ') + formatPower(gVal < 0n ? -gVal : gVal)}
-                        </td>
-                        <td class="${Number(m.contribution||0) < 30 ? 'contrib-low' : Number(m.contribution||0) >= 100 ? 'contrib-high' : 'contrib-ok'}">
-                            <input type="number" class="tbl-input i-contrib" value="${m.contribution || '0'}" min="0" style="color:inherit; font-weight:inherit; -webkit-text-fill-color:inherit;">
-                        </td>
-                        <td><select class="tbl-input i-sub">${OX_LIST.map(o => `<option value="${o}" ${o == m.subjugation ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
-                        <td><select class="tbl-input i-war">${OX_LIST.map(o => `<option value="${o}" ${o == m.guildWar ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
-                        <td><select class="tbl-input i-train">${OX_LIST.map(o => `<option value="${o}" ${o == m.training ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
-                        <td><select class="tbl-input i-kakao">${OX_LIST.map(o => `<option value="${o}" ${o == m.kakao ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
-                        <td><input type="text" class="tbl-input i-inactive" value="${escapeHtml(m.inactive)}" placeholder="미접일"></td>
-                        <td><input type="text" class="tbl-input i-note" value="${escapeHtml(m.note)}" placeholder="비고"></td>
-                        <td><button onclick="delData('${escapeHtml(m.id)}')" style="color:#ff5050; border:none; background:none; cursor:pointer; font-size:16px;">✘</button></td>
-                    </tr>`;
+                html += `<tr data-id="${escapeHtml(m.id)}" class="${isWarning ? 'row-warning' : ''}">
+                    <td style="color:var(--text-sub); font-weight:bold;">${i + 1}</td>
+                    <td><input type="text" class="tbl-input i-name" value="${escapeHtml(m.name)}"></td>
+                    <td><select class="tbl-input i-job">${JOB_LIST.map(j => `<option value="${j}" ${j == m.job ? 'selected' : ''}>${j}</option>`).join('')}</select></td>
+                    <td><input type="text" class="tbl-input i-power" value="${formatPower(m.displayPower)}" oninput="showLiveGuide(this.value)" onblur="document.getElementById('liveGuide').innerText=''"></td>
+                    <td style="font-weight:bold; font-size:12px; color:${gVal > 0n ? '#ff6b6b' : (gVal < 0n ? '#6b9cff' : '#8a8a93')}">
+                        ${gVal === 0n ? '-' : (gVal > 0n ? '▲ ' : '▼ ') + formatPower(gVal < 0n ? -gVal : gVal)}
+                    </td>
+                    <td class="${Number(m.contribution||0) < 30 ? 'contrib-low' : Number(m.contribution||0) >= 100 ? 'contrib-high' : 'contrib-ok'}">
+                        <input type="number" class="tbl-input i-contrib" value="${m.contribution || '0'}" min="0" style="color:inherit; font-weight:inherit; -webkit-text-fill-color:inherit;">
+                    </td>
+                    <td><select class="tbl-input i-sub">${OX_LIST.map(o => `<option value="${o}" ${o == m.subjugation ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
+                    <td><select class="tbl-input i-war">${OX_LIST.map(o => `<option value="${o}" ${o == m.guildWar ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
+                    <td><select class="tbl-input i-train">${OX_LIST.map(o => `<option value="${o}" ${o == m.training ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
+                    <td><select class="tbl-input i-kakao">${OX_LIST.map(o => `<option value="${o}" ${o == m.kakao ? 'selected' : ''}>${o}</option>`).join('')}</select></td>
+                    <td><input type="text" class="tbl-input i-inactive" value="${escapeHtml(m.inactive)}" placeholder="미접일"></td>
+                    <td><input type="text" class="tbl-input i-note" value="${escapeHtml(m.note)}" placeholder="비고"></td>
+                    <td><button onclick="delData('${escapeHtml(m.id)}')" style="color:#ff5050; border:none; background:none; cursor:pointer; font-size:16px;">✘</button></td>
+                </tr>`;
             });
-            tbody.innerHTML = html; // 이슈 #3: 1회만 DOM 삽입
-
-            // 4단계: 요약 카드 업데이트
+            tbody.innerHTML = html;
             document.getElementById('totalPower').innerText  = formatPower(totalP);
             document.getElementById('totalGrowth').innerText = formatPower(totalG);
             document.getElementById('memberCount').innerText = members.length + " / 50";
             document.getElementById('alertCount').innerText  = alertCount + "명";
-
-            // 5단계: 날짜 버튼 + 차트 갱신
             renderDateButtons();
             try { if (typeof drawChart === 'function') drawChart(); } catch (ce) {}
         } catch (error) { console.error("렌더링 에러:", error); }
     }
 
-
-    // ===========================
-    // 멤버 추가 / 정렬 / 삭제
-    // ===========================
-
-    // 이슈 #13: unshift()로 앞에 삽입 + id 내림차순 정렬 → 신규 멤버 항상 맨 위
     function addNewMemberRow() {
-    gatherDataFromTable();
-    members.unshift({
-        id: 'new_' + Date.now().toString(),
-        name: '새 길드원',
-        job: '비숍',
-        power: "0",
-        contribution: '0',
-        subjugation: 'X',
-        guildWar: 'X',
-        training: 'X',
-        kakao: 'O',
-        inactive: '',
-        note: '',
-        history: {}
-    });
-    currentSort = { key: 'id', order: 'desc' };
-    render();
-}
-
-    // 같은 컬럼 재클릭: 오름/내림차순 토글 / 다른 컬럼: 내림차순 초기화
+        gatherDataFromTable();
+        members.unshift({ id: 'new_' + Date.now().toString(), name: '새 길드원', job: '비숍', power: "0", contribution: '0', subjugation: 'X', guildWar: 'X', training: 'X', kakao: 'O', inactive: '', note: '', history: {} });
+        currentSort = { key: 'id', order: 'desc' };
+        render();
+    }
     function handleSort(key) {
         if (window.event) window.event.stopPropagation();
         gatherDataFromTable();
@@ -739,775 +775,215 @@
         else { currentSort.key = key; currentSort.order = 'desc'; }
         render();
     }
-
     function delData(id) {
-        if (confirm("삭제하시겠습니까?")) {
-            gatherDataFromTable();
-            members = members.filter(m => m.id !== id);
-            render();
-        }
+        if (confirm("삭제하시겠습니까?")) { gatherDataFromTable(); members = members.filter(m => m.id !== id); render(); }
     }
 
-
-    // ===========================
-    // 차트
-    // 이슈 #4: BigInt → Number 변환 시 CHART_UNIT(1억) 단위로 나눠 정밀도 손실 방지
-    // 이슈 #5: destroy 대신 update() → 깜빡임 없이 데이터만 교체
-    // ===========================
     function drawChart() {
         const chartElement = document.getElementById('guildPowerChart');
         if (!chartElement) return;
         const ctx = chartElement.getContext('2d');
         const selector = document.getElementById('chartSelector');
         const currentSelection = selector.value;
-
-        // 멤버 목록으로 셀렉터 옵션 갱신 (현재 선택값 유지)
         selector.innerHTML = `<option value="ALL">🌟 길드 총 전투력</option>`;
-        members.forEach(m => {
-            selector.innerHTML += `<option value="${escapeHtml(m.id)}" ${m.id == currentSelection ? 'selected' : ''}>[${m.job}] ${escapeHtml(m.name)}</option>`;
-        });
-
+        members.forEach(m => { selector.innerHTML += `<option value="${escapeHtml(m.id)}" ${m.id == currentSelection ? 'selected' : ''}>[${m.job}] ${escapeHtml(m.name)}</option>`; });
         const chartMode = selector.value;
-
-        // 지정일 기준 7일 전 ~ 지정일 범위만 표시 (이슈 #16)
         const viewDate    = document.getElementById('recordDate').value;
         const viewDateObj = new Date(viewDate);
         const weekAgoObj  = new Date(viewDateObj);
         weekAgoObj.setDate(weekAgoObj.getDate() - 7);
         const weekAgoStr  = weekAgoObj.toISOString().split('T')[0];
-
         let dateSet = new Set();
         members.forEach(m => { if (m.history) Object.keys(m.history).forEach(d => dateSet.add(d)); });
         let dates = Array.from(dateSet).sort().filter(d => d >= weekAgoStr && d <= viewDate);
         if (dates.length === 0) dates.push(viewDate);
-
         let chartDataRaw = [];
         if (chartMode === 'ALL') {
-            chartDataRaw = dates.map(date => {
-                let sum = 0n;
-                members.forEach(m => {
-                    // 해당 날짜 이전 가장 최근 기록값 사용
-                    let availableDates = Object.keys(m.history || {}).sort();
-                    let validDate = availableDates.slice().reverse().find(d => d <= date);
-                    sum += validDate ? parsePower(m.history[validDate]) : parsePower(m.power);
-                });
-                return sum;
-            });
+            chartDataRaw = dates.map(date => { let sum = 0n; members.forEach(m => { let availableDates = Object.keys(m.history || {}).sort(); let validDate = availableDates.slice().reverse().find(d => d <= date); sum += validDate ? parsePower(m.history[validDate]) : parsePower(m.power); }); return sum; });
         } else {
             const target = members.find(m => String(m.id) === String(chartMode));
-            if (target) {
-                chartDataRaw = dates.map(date => {
-                    let availableDates = Object.keys(target.history || {}).sort();
-                    let validDate = availableDates.slice().reverse().find(d => d <= date);
-                    return validDate ? parsePower(target.history[validDate]) : parsePower(target.power);
-                });
-            }
+            if (target) { chartDataRaw = dates.map(date => { let availableDates = Object.keys(target.history || {}).sort(); let validDate = availableDates.slice().reverse().find(d => d <= date); return validDate ? parsePower(target.history[validDate]) : parsePower(target.power); }); }
         }
-
-        // 이슈 #4: CHART_UNIT(1억)으로 나눠 Number 안전 범위 유지
         const chartData = chartDataRaw.map(v => Number(v / CHART_UNIT));
+        const chartConfig = { type: 'line', data: { labels: dates.map(d => d.slice(5)), datasets: [{ label: '전투력', data: chartData, borderColor: '#ff5e00', backgroundColor: 'rgba(255, 94, 0, 0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => formatPower(BigInt(Math.round(v)) * CHART_UNIT) } } } } };
+        if (myChart) { myChart.destroy(); myChart = null; }
+        myChart = new Chart(ctx, chartConfig);
+    }
 
-        const chartConfig = {
-            type: 'line',
-            data: {
-                labels: dates.map(d => d.slice(5)),
-                datasets: [{
-                    label: '전투력',
-                    data: chartData,
-                    borderColor: '#ff5e00',
-                    backgroundColor: 'rgba(255, 94, 0, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: {
-                        ticks: {
-                            // 이슈 #4: CHART_UNIT 곱해 실제 전투력 단위로 역변환
-                            callback: v => formatPower(BigInt(Math.round(v)) * CHART_UNIT)
-                        }
-                    }
-                }
-            }
-        };
-
-        // 이슈 #5: 인스턴스 재사용 → 있으면 데이터만 교체, 없으면 새로 생성
-        if (myChart) {
-            myChart.destroy();
-            myChart = null;
-            }
-            myChart = new Chart(ctx, chartConfig);
-         }
-
-
-    // ===========================
-    // 저장
-    // 이슈 #1: 비밀번호 클라이언트 제거 → GAS 서버에서 검증
-    // 이슈 #7: prompt() → 커스텀 모달로 교체
-    // ===========================
-
-    // 저장 버튼 클릭 → 입력값 수집 후 비밀번호 모달 표시
     function finalSaveToServer() {
-    if (!accessToken) {
-        alert('먼저 로그인이 필요합니다.');
-        document.getElementById('loginModalBg').classList.add('show');
-        return;
-    }
-    gatherDataFromTable();
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwModalBg').classList.add('show');
-    setTimeout(() => document.getElementById('pwInput').focus(), 100);
-}
-
-    function closePwModal() {
-        document.getElementById('pwModalBg').classList.remove('show');
+        if (!accessToken) { alert('먼저 로그인이 필요합니다.'); document.getElementById('loginModalBg').classList.add('show'); return; }
+        gatherDataFromTable();
         document.getElementById('pwInput').value = '';
+        document.getElementById('pwModalBg').classList.add('show');
+        setTimeout(() => document.getElementById('pwInput').focus(), 100);
+    }
+    function closePwModal() { document.getElementById('pwModalBg').classList.remove('show'); document.getElementById('pwInput').value = ''; }
+    function togglePwEye() { const input = document.getElementById('pwInput'); const eye = document.getElementById('pwEye'); input.type = input.type === 'password' ? 'text' : 'password'; eye.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED; }
+
+    async function confirmPw() {
+        const pw = document.getElementById('pwInput').value;
+        if (!pw) return;
+        closePwModal();
+        for (const m of members) { const ok = checkBadWords({ '닉네임': m.name, '비고': m.note }); if (!ok) return; }
+        const date = document.getElementById('recordDate').value;
+        members.forEach(m => { if (!m.history) m.history = {}; if (date === todayStr) m.history[date] = parsePower(m.power).toString(); });
+        const loginRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUserEmail, password: pw }) });
+        const loginData = await loginRes.json();
+        if (loginData.access_token) { accessToken = loginData.access_token; currentUserId = loginData.user.id; await saveAllMembers(members); }
+        else { alert('암호가 틀렸습니다.'); }
     }
 
-    // 눈 모양: 비밀번호 표시/숨김 토글
-    function togglePwEye() {
-        const input = document.getElementById('pwInput');
-        const eye   = document.getElementById('pwEye');
-        input.type = input.type === 'password' ? 'text' : 'password';
-        eye.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
-    }
-
-async function confirmPw() {
-    const pw = document.getElementById('pwInput').value;
-    if (!pw) return;
-    closePwModal();
-     // ✅ 욕설 필터 체크
-    for (const m of members) {
-        const ok = checkBadWords({
-            '닉네임': m.name,
-            '비고': m.note
-        });
-        if (!ok) return; // 필터 걸리면 저장 중단
-    }
-
-    // 오늘 저장 시 history에도 동시 기록
-    // 변경 없음 - 기존 로직 유지 
-    const date = document.getElementById('recordDate').value;
-    members.forEach(m => {
-        if (!m.history) m.history = {};
-        if (date === todayStr) m.history[date] = parsePower(m.power).toString();
-    });
-
-    // ✅ [변경] GAS verifyPassword() 제거 → Supabase auth 로그인으로 교체
-    // Before: google.script.run.verigypassword(pw) -> GAS 서버에서 MASTER_PW와 비교
-    // After: Superbase /auth/v1/token 엔드포인트에 이메일+비밀번호 전송 0> JWT 토큰 발급
-    // 이유: GAS 제거 후 비밀번호 검증 주체를 Supabase auth로 이전
-    const loginRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Content-Type': 'application/json'
-    },
-          body: JSON.stringify({ email: currentUserEmail, password: pw }) // ✅ 추가
-    });
-    const loginData = await loginRes.json();
-
-    // ✅ [변경] 로그인 성공 시 accessToken + currentUserId 전역 변수에 저장
-    // Before: isValid === true 이면 saveAllMembersToSheet() 호출
-    // After: access_token 발급 성공 시 saveAllMembers() 호출
-    // 이유: 이후 모든 Supabase API 호출에 accessToken이 필요하기 때문
-
-    if (loginData.access_token) {
-        accessToken = loginData.access_token;     // 이후 API 호출 시 Authorization 헤더에 사용
-        currentUserId = loginData.user.id;        // 내 길드 조회 시 auth_user_id 필터에 사용
-        await saveAllMembers(members);            // ✅ [변경] saveAllMembersToSheet() → saveAllMembers()
-    } else {
-        alert('암호가 틀렸습니다.');
-    }
-}
-
-
-    // ===========================
-    // 유틸 함수
-    // ===========================
-
-    // BigInt → 한글 단위 문자열 변환
-    // 예: 3000012310000n → "3조 1231만"
-    // 이슈 #14: BigInt 사용으로 1조 이상 수치도 정확하게 처리
     function formatPower(n) {
         try {
-            let v = BigInt(n);
-            if (v === 0n) return "0";
+            let v = BigInt(n); if (v === 0n) return "0";
             let res = "";
-            let k = v / 10000000000000000n; v %= 10000000000000000n; // 경
-            let j = v / 1000000000000n;     v %= 1000000000000n;     // 조
-            let u = v / 100000000n;         v %= 100000000n;         // 억
-            let m = v / 10000n;                                       // 만
-            if (k > 0n) res += k + "경 ";
-            if (j > 0n) res += j + "조 ";
-            if (u > 0n) res += u + "억 ";
-            if (m > 0n) res += m + "만";
+            let k = v / 10000000000000000n; v %= 10000000000000000n;
+            let j = v / 1000000000000n;     v %= 1000000000000n;
+            let u = v / 100000000n;         v %= 100000000n;
+            let m = v / 10000n;
+            if (k > 0n) res += k + "경 "; if (j > 0n) res += j + "조 "; if (u > 0n) res += u + "억 "; if (m > 0n) res += m + "만";
             return res.trim() || "0";
         } catch (e) { return "0"; }
     }
-
-    // 한글 단위 문자열 → BigInt 변환
-    // 예: "3조 1231만" → 3000012310000n
-    // 이슈 #14: BigInt 반환으로 정밀도 손실 없이 대용량 수치 처리
     function parsePower(s) {
         if (typeof s === 'bigint') return s;
         try {
-            if (!s) return 0n;
-            s = String(s).replace(/[, ]/g, "");
+            if (!s) return 0n; s = String(s).replace(/[, ]/g, "");
             let v = 0n, cur = "";
             const unit = { '경': 10000000000000000n, '조': 1000000000000n, '억': 100000000n, '만': 10000n };
-            for (let i = 0; i < s.length; i++) {
-                if (unit[s[i]]) { v += BigInt(cur || 0) * unit[s[i]]; cur = ""; }
-                else cur += s[i];
-            }
+            for (let i = 0; i < s.length; i++) { if (unit[s[i]]) { v += BigInt(cur || 0) * unit[s[i]]; cur = ""; } else cur += s[i]; }
             if (cur && cur !== "-") v += BigInt(cur);
             return v;
         } catch (e) { return 0n; }
     }
 
-    // ✅ [추가] 로그인 모달 함수
-async function doLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const pw = document.getElementById('loginPw').value;
-    
-    const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pw })
-    });
-    const data = await res.json();
-
-    if (data.access_token) {
-        accessToken      = data.access_token;
-        currentUserId    = data.user.id;
-        currentUserEmail = email;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('currentUserId', currentUserId);
-        localStorage.setItem('currentUserEmail', currentUserEmail);
-        document.getElementById('logoutBtn').style.display = 'block'; // ← 여기로 이동
-        if (pendingGuildId) {
-            await refreshData(pendingGuildId);
-            pendingGuildId = null;
-        } else {
-            await showGuildListModal();
-        }
-    } else {
-        document.getElementById('loginError').style.display = 'block'; // ← 로그인 실패 시
+    async function doLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const pw = document.getElementById('loginPw').value;
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pw }) });
+        const data = await res.json();
+        if (data.access_token) {
+            accessToken = data.access_token; currentUserId = data.user.id; currentUserEmail = email;
+            localStorage.setItem('accessToken', accessToken); localStorage.setItem('currentUserId', currentUserId); localStorage.setItem('currentUserEmail', currentUserEmail);
+            document.getElementById('logoutBtn').style.display = 'block';
+            if (pendingGuildId) { await refreshData(pendingGuildId); pendingGuildId = null; }
+            else { await showGuildListModal(); }
+        } else { document.getElementById('loginError').style.display = 'block'; }
     }
-}
 
-    // ✅ [추가] 회원가입 + 길드 생성 함수
     async function doRegister() {
-        const email      = document.getElementById('regEmail').value;
-        const pw         = document.getElementById('regPw').value;
-        const guildName  = document.getElementById('regGuildName').value;
-        const serverName = document.getElementById('regServerName').value;
-
-        // 1. 빈칸 체크 (무조건 먼저)
-        if (!email || !pw || !guildName || !serverName) {
-        document.getElementById('registerError').style.display = 'block';
-        document.getElementById('registerError').textContent = '모든 항목을 입력해주세요.';
-        return;
-    }
-
-        // ✅ 욕설 필터 체크
-        const ok = checkBadWords({
-            '길드명': guildName,
-            '서버명': serverName
-        });
-        if (!ok) return;
-
-        // ✅ 서버명 형식 검증 (스카니아-숫자 only)
+        const email = document.getElementById('regEmail').value; const pw = document.getElementById('regPw').value;
+        const guildName = document.getElementById('regGuildName').value; const serverName = document.getElementById('regServerName').value;
+        if (!email || !pw || !guildName || !serverName) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '모든 항목을 입력해주세요.'; return; }
+        const ok = checkBadWords({ '길드명': guildName, '서버명': serverName }); if (!ok) return;
         const serverPattern = /^스카니아-\d+$/;
-        if (!serverPattern.test(serverName.trim())) {
-        document.getElementById('registerError').style.display = 'block';
-        document.getElementById('registerError').textContent = '서버명은 "스카니아-숫자" 형식으로 입력해주세요. (예: 스카니아-10)';
-        return;
-        }
-
-    try {
-        // 1단계: Supabase auth 회원가입
-        const signUpRes = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password: pw })
-        });
-        const signUpData = await signUpRes.json();
-
-        if (!signUpData.user) {
-            document.getElementById('registerError').style.display = 'block';
-            document.getElementById('registerError').textContent = '이미 사용 중인 이메일입니다.';
-            return;
-        }
-
-        // 2단계: 로그인 → accessToken 발급
-        const loginRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Content-Type': 'application/json'
-         },
-            body: JSON.stringify({ email: email, password: pw }) // ✅ email 변수 사용
-        });
-        const loginData = await loginRes.json();
-
-        if (!loginData.access_token) {
-            document.getElementById('registerError').style.display = 'block';
-            document.getElementById('registerError').textContent = '로그인에 실패했습니다. 다시 시도해주세요.';
-            return;
-        }
-
-        accessToken      = loginData.access_token;
-        currentUserId    = loginData.user.id;
-        currentUserEmail = email;
-        localStorage.setItem('accessToken', loginData.access_token);
-        localStorage.setItem('currentUserId', loginData.user.id);
-        localStorage.setItem('currentUserEmail', email);
-
-        // 3단계: guilds 테이블에 길드 생성
-        const guildRes = await fetch(`${SUPABASE_URL}/rest/v1/guilds`, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'return=representation'
-            },
-            body: JSON.stringify({
-                auth_user_id: currentUserId,
-                name:         guildName,
-                server_name:  serverName,
-                max_members:  50
-            })
-        });
-        const guildData = await guildRes.json();
-
-        if (!guildData || guildData.error) {
-            document.getElementById('registerError').style.display = 'block';
-            document.getElementById('registerError').textContent = '이미 사용 중인 길드명입니다.';
-            return;
-        }
-
-        // 4단계: 가입 성공 → 길드 목록 모달로 이동
-        document.getElementById('registerModalBg').classList.remove('show');
-        await showGuildListModal(); // ✅ [변경] refreshData() → showGuildListModal()
-
-    } catch(e) {
-        console.error('회원가입 실패:', e); 
-        document.getElementById('registerError').style.display = 'block';
-        document.getElementById('registerError').textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-    }
-}
-
-// 모달 전환 함수
-function showRegisterModal() {
-    document.getElementById('loginModalBg').classList.remove('show');
-    document.getElementById('guildListModalBg').classList.remove('show');
-    document.getElementById('registerModalBg').classList.add('show');
-    setTimeout(() => document.getElementById('regEmail').focus(), 100);
-}
-
-function showLoginModal() {
-    document.getElementById('registerModalBg').classList.remove('show');
-    document.getElementById('resetModalBg').classList.remove('show');
-    document.getElementById('loginModalBg').classList.add('show');
-    setTimeout(() => document.getElementById('loginEmail').focus(), 100);
-}
-
-function showResetModal() {
-    document.getElementById('loginModalBg').classList.remove('show');
-    document.getElementById('resetModalBg').classList.add('show');
-    setTimeout(() => document.getElementById('resetEmail').focus(), 100);
-}
-
-async function doResetPassword() {
-    const email = document.getElementById('resetEmail').value;
-    const msg   = document.getElementById('resetMsg');
-    if (!email) {
-        msg.style.display = 'block';
-        msg.style.color = '#ff5252';
-        msg.textContent = '이메일을 입력해주세요.';
-        return;
-    }
-    const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-    email,
-    redirectTo: 'https://maple-calc.vercel.app/guild'
-}) 
-    });
-    if (res.ok) {
-        // 이메일 도메인 분기
-        let mailLink = '';
-if (email.includes('@gmail.com')) {
-    mailLink = 'https://mail.google.com';
-    } else if (email.includes('@naver.com')) {
-    mailLink = 'https://mail.naver.com';
-    } else if (email.includes('@kakao.com') || email.includes('@daum.net') || email.includes('@hanmail.net')) {
-    mailLink = 'https://mail.kakao.com';
-    } else if (email.includes('@nate.com')) {
-    mailLink = 'https://mail.nate.com';
-    } else if (email.includes('@outlook.com') || email.includes('@hotmail.com')) {
-    mailLink = 'https://outlook.live.com';
-    } else if (email.includes('@icloud.com')) {
-    mailLink = 'https://www.icloud.com/mail';
-    } else if (email.includes('@yahoo.com')) {
-    mailLink = 'https://mail.yahoo.com';
-    } else {
-    mailLink = '';
-    }
-
-        msg.style.display = 'block';
-        msg.style.color = '#4ade80';
-        msg.innerHTML = mailLink
-            ? `재설정 링크를 보냈어요! <a href="${mailLink}" target="_blank" style="color:#ffb300; font-weight:900;">📬 이메일 바로가기</a>`
-            : '재설정 링크를 이메일로 보냈어요!';
-    } else {
-        msg.style.display = 'block';
-        msg.style.color = '#ff5252';
-        msg.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-    }
-}
-async function doUpdatePassword() {
-    const newPw = document.getElementById('newPwInput').value;
-    const msg   = document.getElementById('newPwMsg');
-
-    if (!newPw || newPw.length < 6) {
-        msg.style.display = 'block';
-        msg.style.color = '#ff5252';
-        msg.textContent = '비밀번호는 6자 이상이어야 해요.';
-        return;
-    }
-
-    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        method: 'PUT',
-        headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password: newPw })
-    });
-    const data = await res.json();
-
-    if (data.id) {
-        msg.style.display = 'block';
-        msg.style.color = '#4ade80';
-        msg.textContent = '비밀번호가 변경됐어요!';
-        setTimeout(async () => {
-            document.getElementById('newPwModalBg').classList.remove('show');
-            // URL hash 제거
-            history.replaceState(null, '', window.location.pathname);
+        if (!serverPattern.test(serverName.trim())) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '서버명은 "스카니아-숫자" 형식으로 입력해주세요. (예: 스카니아-10)'; return; }
+        try {
+            const signUpRes = await fetch(`${SUPABASE_URL}/auth/v1/signup`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pw }) });
+            const signUpData = await signUpRes.json();
+            if (!signUpData.user) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '이미 사용 중인 이메일입니다.'; return; }
+            const loginRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pw }) });
+            const loginData = await loginRes.json();
+            if (!loginData.access_token) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '로그인에 실패했습니다.'; return; }
+            accessToken = loginData.access_token; currentUserId = loginData.user.id; currentUserEmail = email;
+            localStorage.setItem('accessToken', loginData.access_token); localStorage.setItem('currentUserId', loginData.user.id); localStorage.setItem('currentUserEmail', email);
+            const guildRes = await fetch(`${SUPABASE_URL}/rest/v1/guilds`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify({ auth_user_id: currentUserId, name: guildName, server_name: serverName, max_members: 50 }) });
+            const guildData = await guildRes.json();
+            if (!guildData || guildData.error) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '이미 사용 중인 길드명입니다.'; return; }
+            document.getElementById('registerModalBg').classList.remove('show');
             await showGuildListModal();
-        }, 1500);
-    } else {
-        msg.style.display = 'block';
-        msg.style.color = '#ff5252';
-        msg.textContent = '링크가 만료됐어요. 다시 시도해주세요.';
-        setTimeout(() => {
-            document.getElementById('newPwModalBg').classList.remove('show');
-            document.getElementById('loginModalBg').classList.add('show');
-        }, 2000);
-    }
-}
-
-function doLogout() {
-    accessToken      = null;
-    currentUserId    = null;
-    currentUserEmail = null;
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('currentUserId');
-    localStorage.removeItem('currentUserEmail');
-    document.getElementById('logoutBtn').style.display = 'none';
-    showGuildListModal();
-}
-
-function toggleNewPwEye() {
-    const input = document.getElementById('newPwInput');
-    const span  = input.nextElementSibling;
-    input.type = input.type === 'password' ? 'text' : 'password';
-    span.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
-}
-
-function toggleRegEye() {
-    const input = document.getElementById('regPw');
-    input.type = input.type === 'password' ? 'text' : 'password';
-    input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
-}
-function toggleLoginEye() {
-    const input = document.getElementById('loginPw');
-    input.type = input.type === 'password' ? 'text' : 'password';
-    // 부모 span 찾기
-    input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED;
-}
-
-async function showGuildListModal() {
-    document.getElementById('loginModalBg').classList.remove('show');
-    document.getElementById('registerModalBg').classList.remove('show');
-    document.getElementById('guildListModalBg').classList.add('show');
-    await loadGuildListPublic();
-}
-
-async function loadGuildList() {
-    const container = document.getElementById('guildListContainer');
-    const empty     = document.getElementById('guildListEmpty');
-    container.innerHTML = '';
-
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/guilds?auth_user_id=eq.${currentUserId}&select=*`, {
-        headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${accessToken}`
-        }
-    });
-    const guilds = await res.json();
-
-    if (!guilds.length) {
-        empty.style.display = 'block';
-        return;
+        } catch(e) { document.getElementById('registerError').style.display = 'block'; document.getElementById('registerError').textContent = '오류가 발생했습니다.'; }
     }
 
-    empty.style.display = 'none';
-    guilds.forEach(g => {
-        const card = document.createElement('div');
-        card.className = 'guild-card';
-        card.innerHTML = `
-            <div>
-                <div class="guild-card-name">${escapeHtml(g.name)}</div>
-                <div class="guild-card-server">${escapeHtml(g.server_name)}</div>
-            </div>
-            <div class="guild-card-arrow">▶</div>
-        `;
-        card.onclick = () => selectGuild(g.id);
-        container.appendChild(card);
-    });
-}
+    function showRegisterModal() { document.getElementById('loginModalBg').classList.remove('show'); document.getElementById('guildListModalBg').classList.remove('show'); document.getElementById('registerModalBg').classList.add('show'); setTimeout(() => document.getElementById('regEmail').focus(), 100); }
+    function showLoginModal() { document.getElementById('registerModalBg').classList.remove('show'); document.getElementById('resetModalBg').classList.remove('show'); document.getElementById('loginModalBg').classList.add('show'); setTimeout(() => document.getElementById('loginEmail').focus(), 100); }
+    function showResetModal() { document.getElementById('loginModalBg').classList.remove('show'); document.getElementById('resetModalBg').classList.add('show'); setTimeout(() => document.getElementById('resetEmail').focus(), 100); }
 
-async function loadGuildListPublic() {
-    const container = document.getElementById('guildListContainer');
-    const empty     = document.getElementById('guildListEmpty');
-    container.innerHTML = '';
-
-    // anon key로 전체 길드 조회 (로그인 불필요)
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/guilds?select=*`, {
-        headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-        }
-    });
-    const guilds = await res.json();
-
-    if (!guilds.length) { empty.style.display = 'block'; return; }
-
-    empty.style.display = 'none';
-    guilds.forEach(g => {
-        const card = document.createElement('div');
-        card.className = 'guild-card';
-        card.innerHTML = `
-            <div>
-                <div class="guild-card-name">${escapeHtml(g.name)}</div>
-                <div class="guild-card-server">${escapeHtml(g.server_name)}</div>
-            </div>
-            <div class="guild-card-arrow">▶</div>
-        `;
-        card.onclick = () => selectGuild(g.id); // 선택 시 로그인 체크
-        container.appendChild(card);
-    });
-}
-
-async function selectGuild(guildId) {
-    document.getElementById('guildListModalBg').classList.remove('show');
-
-    if (!accessToken) {
-        // 로그인 안 된 상태 → 로그인 모달 표시 후 guildId 기억
-        pendingGuildId = guildId;
-        document.getElementById('loginModalBg').classList.add('show');
-        setTimeout(() => document.getElementById('loginEmail').focus(), 100);
-    } else {
-        await refreshData(guildId);
-    }
-}
-
-// ===========================
-// 욕설/성드립/19금 필터
-// ===========================
-const BAD_WORDS = [
-    // 욕설
-    '씨발','시발','씨팔','시팔','ㅅㅂ','ㅆㅂ','개새','개색','개세',
-    '지랄','존나','존내','ㅈㄴ','병신','ㅂㅅ','미친','꺼져','닥쳐',
-    '보지','자지','좆','쪽팔','창녀','년놈','새끼','섹스','섹쓰','cex','Sex','섹스',
-    // 성드립/19금
-    '야동','av','섹','성관계','강간','성폭','항문','자위','딸딸',
-    '페니스','보지','질내','사정','사까시','원나잇','노브라','쾌감',
-    // 기타
-    '홀로','나치','히틀러','니애미','노무현','무현','앙기모찌'
-];
-
-function containsBadWord(str) {
-    if (!str) return false;
-    const normalized = str.replace(/\s/g, '').toLowerCase();
-    return BAD_WORDS.some(word => normalized.includes(word.toLowerCase()));
-}
-
-function checkBadWords(fields) {
-    // fields: { 필드명: 값 } 객체
-    for (const [label, value] of Object.entries(fields)) {
-        if (containsBadWord(value)) {
-            alert(`⚠️ "${label}"에 사용할 수 없는 단어가 포함되어 있습니다.\n저장이 취소됩니다.`);
-            return false;
-        }
-    }
-    return true;
-}
-
-    // 이슈 #15(XSS): innerHTML 삽입 시 스크립트 실행 방지
-    // 처리 대상: & < > "
-    function escapeHtml(str) {
-        return String(str || '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+    async function doResetPassword() {
+        const email = document.getElementById('resetEmail').value; const msg = document.getElementById('resetMsg');
+        if (!email) { msg.style.display = 'block'; msg.style.color = '#ff5252'; msg.textContent = '이메일을 입력해주세요.'; return; }
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email, redirectTo: 'https://maple-calc.vercel.app/guild' }) });
+        if (res.ok) {
+            let mailLink = '';
+            if (email.includes('@gmail.com')) mailLink = 'https://mail.google.com';
+            else if (email.includes('@naver.com')) mailLink = 'https://mail.naver.com';
+            else if (email.includes('@kakao.com') || email.includes('@daum.net') || email.includes('@hanmail.net')) mailLink = 'https://mail.kakao.com';
+            else if (email.includes('@nate.com')) mailLink = 'https://mail.nate.com';
+            else if (email.includes('@outlook.com') || email.includes('@hotmail.com')) mailLink = 'https://outlook.live.com';
+            else if (email.includes('@icloud.com')) mailLink = 'https://www.icloud.com/mail';
+            else if (email.includes('@yahoo.com')) mailLink = 'https://mail.yahoo.com';
+            msg.style.display = 'block'; msg.style.color = '#4ade80';
+            msg.innerHTML = mailLink ? `재설정 링크를 보냈어요! <a href="${mailLink}" target="_blank" style="color:#ffb300; font-weight:900;">📬 이메일 바로가기</a>` : '재설정 링크를 이메일로 보냈어요!';
+        } else { msg.style.display = 'block'; msg.style.color = '#ff5252'; msg.textContent = '오류가 발생했습니다. 다시 시도해주세요.'; }
     }
 
-    // ✅ [추가] Supabase에서 멤버 데이터 조회
-async function getMembers(guildId) {
-    const headers = {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-    };
+    async function doUpdatePassword() {
+        const newPw = document.getElementById('newPwInput').value; const msg = document.getElementById('newPwMsg');
+        if (!newPw || newPw.length < 6) { msg.style.display = 'block'; msg.style.color = '#ff5252'; msg.textContent = '비밀번호는 6자 이상이어야 해요.'; return; }
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, { method: 'PUT', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ password: newPw }) });
+        const data = await res.json();
+        if (data.id) {
+            msg.style.display = 'block'; msg.style.color = '#4ade80'; msg.textContent = '비밀번호가 변경됐어요!';
+            setTimeout(async () => { document.getElementById('newPwModalBg').classList.remove('show'); history.replaceState(null, '', window.location.pathname); await showGuildListModal(); }, 1500);
+        } else { msg.style.display = 'block'; msg.style.color = '#ff5252'; msg.textContent = '링크가 만료됐어요. 다시 시도해주세요.'; setTimeout(() => { document.getElementById('newPwModalBg').classList.remove('show'); document.getElementById('loginModalBg').classList.add('show'); }, 2000); }
+    }
 
-    const memberRes = await fetch(`${SUPABASE_URL}/rest/v1/members?guild_id=eq.${guildId}&select=*`, { headers });
-    const rawMembers = await memberRes.json();
-    if (!rawMembers.length) return [];
+    function doLogout() {
+        accessToken = null; currentUserId = null; currentUserEmail = null;
+        localStorage.removeItem('accessToken'); localStorage.removeItem('currentUserId'); localStorage.removeItem('currentUserEmail');
+        document.getElementById('logoutBtn').style.display = 'none';
+        showGuildListModal();
+    }
 
-    const histRes = await fetch(`${SUPABASE_URL}/rest/v1/histories?member_id=in.(${rawMembers.map(m => m.id).join(',')})&select=*`, { headers });
-    const histories = await histRes.json();
+    function toggleNewPwEye() { const input = document.getElementById('newPwInput'); input.type = input.type === 'password' ? 'text' : 'password'; input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED; }
+    function toggleRegEye() { const input = document.getElementById('regPw'); input.type = input.type === 'password' ? 'text' : 'password'; input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED; }
+    function toggleLoginEye() { const input = document.getElementById('loginPw'); input.type = input.type === 'password' ? 'text' : 'password'; input.nextElementSibling.innerHTML = input.type === 'password' ? EYE_OPEN : EYE_CLOSED; }
 
-    return rawMembers.map(m => {
-        const hist = histories.filter(h => h.member_id === m.id);
-        const historyObj = {};
-        hist.forEach(h => { historyObj[h.recorded_date] = String(h.recorded_power); });
-        return {
-            id:           String(m.id),
-            name:         m.nickname || '이름없음',
-            job:          m.job || '비숍',
-            power:        String(m.current_power || "0"),
-            subjugation:  m.subjugation || 'O',
-            guildWar:     m.guild_war || 'O',
-            training:     m.training || 'O',
-            kakao:        m.kakao || 'O',
-            contribution: String(m.contribution || "0"),
-            inactive:     m.inactive || '',
-            note:         m.note || '',
-            history:      historyObj
-        };
-    });
-}
+    const BAD_WORDS = ['씨발','시발','씨팔','시팔','ㅅㅂ','ㅆㅂ','개새','개색','개세','지랄','존나','존내','ㅈㄴ','병신','ㅂㅅ','미친','꺼져','닥쳐','보지','자지','좆','쪽팔','창녀','년놈','새끼','섹스','섹쓰','cex','Sex','야동','av','성관계','강간','성폭','항문','자위','딸딸','페니스','질내','사정','사까시','원나잇','노브라','쾌감','홀로','나치','히틀러','니애미','노무현','무현','앙기모찌'];
+    function containsBadWord(str) { if (!str) return false; const normalized = str.replace(/\s/g, '').toLowerCase(); return BAD_WORDS.some(word => normalized.includes(word.toLowerCase())); }
+    function checkBadWords(fields) { for (const [label, value] of Object.entries(fields)) { if (containsBadWord(value)) { alert(`⚠️ "${label}"에 사용할 수 없는 단어가 포함되어 있습니다.`); return false; } } return true; }
+    function escapeHtml(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-// ✅ [추가] Supabase에 멤버 데이터 저장
-async function saveAllMembers(memberList) {
-    try {
-        for (const m of memberList) {
-            if (m.id && !String(m.id).startsWith('new_')) {
-                await fetch(`${SUPABASE_URL}/rest/v1/members?id=eq.${m.id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nickname:      m.name,
-                        job:           m.job,
-                        current_power: String(parsePower(m.power)),
-                        subjugation:   m.subjugation,
-                        guild_war:     m.guildWar,
-                        training:      m.training,
-                        kakao:         m.kakao,
-                        contribution:  Number(m.contribution || 0),
-                        inactive:      m.inactive,
-                        note:          m.note
-                    })
-                });
-            } else {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/members`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=representation'
-                    },
-                    body: JSON.stringify({
-                        guild_id:      currentGuildId,
-                        nickname:      m.name,
-                        job:           m.job,
-                        current_power: String(parsePower(m.power)),
-                        subjugation:   m.subjugation,
-                        guild_war:     m.guildWar,
-                        training:      m.training,
-                        kakao:         m.kakao,
-                        contribution:  Number(m.contribution || 0),
-                        inactive:      m.inactive,
-                        note:          m.note
-                    })
-                });
-                const newMember = await res.json();
-                console.log('INSERT 응답:', newMember);
-            m.id = String(newMember[0]?.id || newMember?.id || Date.now());
-            }
+    async function getMembers(guildId) {
+        const headers = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
+        const memberRes = await fetch(`${SUPABASE_URL}/rest/v1/members?guild_id=eq.${guildId}&select=*`, { headers });
+        const rawMembers = await memberRes.json();
+        if (!rawMembers.length) return [];
+        const histRes = await fetch(`${SUPABASE_URL}/rest/v1/histories?member_id=in.(${rawMembers.map(m => m.id).join(',')})&select=*`, { headers });
+        const histories = await histRes.json();
+        return rawMembers.map(m => {
+            const hist = histories.filter(h => h.member_id === m.id);
+            const historyObj = {};
+            hist.forEach(h => { historyObj[h.recorded_date] = String(h.recorded_power); });
+            return { id: String(m.id), name: m.nickname || '이름없음', job: m.job || '비숍', power: String(m.current_power || "0"), subjugation: m.subjugation || 'O', guildWar: m.guild_war || 'O', training: m.training || 'O', kakao: m.kakao || 'O', contribution: String(m.contribution || "0"), inactive: m.inactive || '', note: m.note || '', history: historyObj };
+        });
+    }
 
-            // history 저장 - 에러 무시
-            for (const [date, power] of Object.entries(m.history || {})) {
-                try {
-                    await fetch(`${SUPABASE_URL}/rest/v1/histories`, {
-                        method: 'POST',
-                        headers: {
-                            'apikey': SUPABASE_KEY,
-                            'Authorization': `Bearer ${accessToken}`,
-                            'Content-Type': 'application/json',
-                            'Prefer': 'return=minimal,resolution=merge-duplicates',
-                            'on-conflict': 'member_id,recorded_date'
-                        },
-                        body: JSON.stringify({
-                            member_id:      Number(m.id),
-                            recorded_power: String(parsePower(power)),
-                            recorded_date:  date
-                        })
-                    });
-                } catch(histErr) {
-                    console.warn('history 저장 실패 (무시):', histErr);
+    async function saveAllMembers(memberList) {
+        try {
+            for (const m of memberList) {
+                if (m.id && !String(m.id).startsWith('new_')) {
+                    await fetch(`${SUPABASE_URL}/rest/v1/members?id=eq.${m.id}`, { method: 'PATCH', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname: m.name, job: m.job, current_power: String(parsePower(m.power)), subjugation: m.subjugation, guild_war: m.guildWar, training: m.training, kakao: m.kakao, contribution: Number(m.contribution || 0), inactive: m.inactive, note: m.note }) });
+                } else {
+                    const res = await fetch(`${SUPABASE_URL}/rest/v1/members`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify({ guild_id: currentGuildId, nickname: m.name, job: m.job, current_power: String(parsePower(m.power)), subjugation: m.subjugation, guild_war: m.guildWar, training: m.training, kakao: m.kakao, contribution: Number(m.contribution || 0), inactive: m.inactive, note: m.note }) });
+                    const newMember = await res.json();
+                    m.id = String(newMember[0]?.id || newMember?.id || Date.now());
+                }
+                for (const [date, power] of Object.entries(m.history || {})) {
+                    try { await fetch(`${SUPABASE_URL}/rest/v1/histories`, { method: 'POST', headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal,resolution=merge-duplicates', 'on-conflict': 'member_id,recorded_date' }, body: JSON.stringify({ member_id: Number(m.id), recorded_power: String(parsePower(power)), recorded_date: date }) }); } catch(e) {}
                 }
             }
+            const btn = document.querySelector('.btn-final');
+            const original = btn.textContent;
+            btn.textContent = '✅ 저장됨!'; btn.style.background = '#4ade80';
+            setTimeout(() => { btn.textContent = original; btn.style.background = ''; }, 2000);
+        } catch(e) {
+            const btn = document.querySelector('.btn-final');
+            btn.textContent = '❌ 저장 실패'; btn.style.background = '#ff5252';
+            setTimeout(() => { btn.textContent = '🔒 저장하기'; btn.style.background = ''; }, 2000);
         }
-        const btn = document.querySelector('.btn-final');
-        const original = btn.textContent;
-        btn.textContent = '✅ 저장됨!';
-        btn.style.background = '#4ade80';
-        setTimeout(() => {
-            btn.textContent = original;
-            btn.style.background = '';
-        }, 2000);
-    } catch(e) {
-        console.error('저장 실패:', e);
-        const btn = document.querySelector('.btn-final');
-        btn.textContent = '❌ 저장 실패';
-        btn.style.background = '#ff5252';
-        setTimeout(() => {
-            btn.textContent = '🔒 저장하기';
-            btn.style.background = '';
-        }, 2000);
+        drawChart();
     }
-    drawChart();
-}
 </script>
 </body>
 </html>
