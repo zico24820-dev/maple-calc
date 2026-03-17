@@ -504,7 +504,7 @@
                     </div>
                     <div class="guild-card-arrow">▶</div>
                 `;
-                card.onclick = () => selectGuild(g.id);
+                card.onclick = () => selectGuild(g.id, g.name, g.server_name);
                 allContainer.appendChild(card);
             });
         }
@@ -556,10 +556,13 @@
         await loadGuildListPublic();
     }
 
+    let pendingGuildName = null;
+    let pendingGuildServer = null;
+
     async function selectGuild(guildId, guildName, serverName) {
         document.getElementById('guildListModalBg').classList.remove('show');
 
-        // 배너 업데이트
+        // 배너 업데이트 (이름 있으면 바로, 없으면 로드 후)
         if (guildName) {
             document.getElementById('currentGuildBanner').style.display = 'flex';
             document.getElementById('currentGuildName').textContent = guildName;
@@ -568,6 +571,8 @@
 
         if (!accessToken) {
             pendingGuildId = guildId;
+            pendingGuildName = guildName || null;
+            pendingGuildServer = serverName || null;
             document.getElementById('loginModalBg').classList.add('show');
             setTimeout(() => document.getElementById('loginEmail').focus(), 100);
         } else {
@@ -616,6 +621,19 @@
         try {
             members = await getMembers(guildId);
             render();
+            // 배너에 이름이 없으면 Supabase에서 길드 정보 가져와서 표시
+            const bannerName = document.getElementById('currentGuildName').textContent;
+            if (!bannerName) {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/guilds?id=eq.${guildId}&select=name,server_name`, {
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+                });
+                const data = await res.json();
+                if (data && data[0]) {
+                    document.getElementById('currentGuildBanner').style.display = 'flex';
+                    document.getElementById('currentGuildName').textContent = data[0].name;
+                    document.getElementById('currentGuildServer').textContent = data[0].server_name || '';
+                }
+            }
         } catch(err) {
             alert('데이터를 불러오지 못했습니다. 새로고침 해주세요.');
         }
@@ -866,7 +884,15 @@
             accessToken = data.access_token; currentUserId = data.user.id; currentUserEmail = email;
             localStorage.setItem('accessToken', accessToken); localStorage.setItem('currentUserId', currentUserId); localStorage.setItem('currentUserEmail', currentUserEmail);
             document.getElementById('logoutBtn').style.display = 'block';
-            if (pendingGuildId) { await refreshData(pendingGuildId); pendingGuildId = null; }
+            if (pendingGuildId) {
+                if (pendingGuildName) {
+                    document.getElementById('currentGuildBanner').style.display = 'flex';
+                    document.getElementById('currentGuildName').textContent = pendingGuildName;
+                    document.getElementById('currentGuildServer').textContent = pendingGuildServer || '';
+                }
+                await refreshData(pendingGuildId);
+                pendingGuildId = null; pendingGuildName = null; pendingGuildServer = null;
+            }
             else { await showGuildListModal(); }
         } else { document.getElementById('loginError').style.display = 'block'; }
     }
